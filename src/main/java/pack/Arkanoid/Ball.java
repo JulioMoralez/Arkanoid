@@ -1,5 +1,7 @@
 package pack.Arkanoid;
 
+import pack.Level;
+
 import java.util.Random;
 
 public class Ball {
@@ -8,8 +10,8 @@ public class Ball {
         state=1;
         size=20;
         speed=5.0;
-        posX=500;
-        posY=200;
+        posX=-100;
+        posY=-100;
         Random random = new Random();
         dx=-speed*Math.cos(random.nextDouble());
         dy=-speed*Math.sin(random.nextDouble());
@@ -75,8 +77,8 @@ public class Ball {
                 onBatY=bat.getFat();
                 break;
             case 4:
-                onBatX=10;//bat.getFat();
-                onBatY=-10;//bat.getSize()*0.3;
+                onBatX=bat.getFat();
+                onBatY=bat.getSize()*0.3;
                 break;
         }
 
@@ -108,7 +110,6 @@ public class Ball {
     }
             dx=-speed*Math.cos(t);
             dy=-speed*Math.sin(t);
-
     }
 
     void moveBall(){
@@ -129,7 +130,8 @@ public class Ball {
                 dy=Math.abs(dy);
             }
             if (posY+size >Arkanoid.WINDOW_SIZE_H){
-                dy=-Math.abs(dy);
+                //dy=-Math.abs(dy);
+                Arkanoid.balls.remove(this);
             }
         }
     }

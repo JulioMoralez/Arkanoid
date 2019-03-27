@@ -18,7 +18,8 @@ public class Arkanoid extends JFrame{
     public static List<Ball> balls = new CopyOnWriteArrayList<>();
     public static List<Bat> bats = new CopyOnWriteArrayList<>();
     public static List<Brick> bricks = new CopyOnWriteArrayList<>();
-    private Collision collision;
+    private Game game;
+    private Menu menu;
 
 
 
@@ -41,11 +42,21 @@ public class Arkanoid extends JFrame{
             g.fillRect(brick.getPosX(),brick.getPosY(),brick.getW(),brick.getH());
         }
 
-
         g.setColor(Color.YELLOW);
         for (Ball ball: balls){
             g.fillOval((int)ball.getPosX(),(int)ball.getPosY(),ball.getSize(),ball.getSize());
         }
+
+        g.setFont(new Font("TimesRoman",Font.BOLD,30));
+        g.drawString("Menu",WINDOW_SIZE_W+50,100);
+        int i=0;
+        for (String str:menu.getNameMenuItem()){
+            g.drawString(str,WINDOW_SIZE_W+50,200+i++*30);
+        }
+        g.setColor(Color.LIGHT_GRAY);
+        g.fillRect(WINDOW_SIZE_W+10,160,40,120);
+        g.setColor(Color.RED);
+        g.fillOval(WINDOW_SIZE_W+10,170+menu.getCurrentMenuItem()*30,40,40);
 
         g.setColor(Color.GRAY);
         for (Bat bat: bats){
@@ -67,12 +78,25 @@ public class Arkanoid extends JFrame{
     }
 
     public Arkanoid(){
-        setLayout(new GridLayout(3,1));
-        setSize(new Dimension(WINDOW_SIZE_W, WINDOW_SIZE_H));
+        setLayout(new GridLayout(1,1));
+        setSize(new Dimension(WINDOW_SIZE_W+200, WINDOW_SIZE_H));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        start();
+        game = new Game();
+        menu = new Menu();
+
+        new Thread(()->{
+            while (true){
+                repaint();
+                try {
+                    Thread.sleep(16);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
         setVisible(true);
-        buffer = this.createImage(WINDOW_SIZE_W,WINDOW_SIZE_H);
+        buffer = this.createImage(WINDOW_SIZE_W+200,WINDOW_SIZE_H);
 
         addKeyListener(new KeyAdapter() {
             @Override
@@ -80,6 +104,21 @@ public class Arkanoid extends JFrame{
                 super.keyPressed(e);
                 for (Bat bat: bats){
                     bat.moveBat(e.getKeyCode());
+                }
+                menu.keyMenu(e.getKeyCode());
+                if (e.getKeyCode()==10){
+                    switch (menu.getCurrentMenuItem()){
+                        case 0:
+                            game.newGame();
+                            break;
+                        case 1:
+                            break;
+                        case 2:
+                            System.exit(0);
+                            break;
+
+
+                    }
                 }
 
             }
@@ -92,66 +131,8 @@ public class Arkanoid extends JFrame{
                 }
             }
         });
-
-
     }
 
-    private void start() {
 
-        bats.add(new Bat(1));
-//        bats.add(new Bat(2));
-//        bats.add(new Bat(3));
-//        bats.add(new Bat(4));
-
-        balls.add(new Ball());
-        balls.add(new Ball());
-//        balls.add(new Ball());
-//        balls.add(new Ball());
-
-        balls.get(0).setBat(bats.get(0));
-//        balls.get(1).setBat(bats.get(1));
-//        balls.get(2).setBat(bats.get(2));
-//        balls.get(3).setBat(bats.get(3));
-
-        bats.get(0).ballAdd(balls.get(0));
-//        bats.get(1).ballAdd(balls.get(1));
-//        bats.get(2).ballAdd(balls.get(2));
-//        bats.get(3).ballAdd(balls.get(3));
-
-        Level level = new Level();
-
-
-        level.create(1);
-
-
-        collision = new Collision();
-
-
-        new Thread(() -> {
-            while (true){
-                for (Ball ball:balls) {
-                    ball.moveBall();
-                }
-                collision.result();
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }).start();
-
-        new Thread(()->{
-            while (true){
-                repaint();
-                try {
-                    Thread.sleep(16);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
 
 }

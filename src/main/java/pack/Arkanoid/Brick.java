@@ -1,5 +1,7 @@
 package pack.Arkanoid;
 
+import pack.Level;
+
 import java.awt.*;
 import java.util.Objects;
 
@@ -107,6 +109,7 @@ public class Brick {
 
     public void hit() {
         if (--hp==0){
+            Level.levelHP--;
             Arkanoid.bricks.remove(this);
         }
     }

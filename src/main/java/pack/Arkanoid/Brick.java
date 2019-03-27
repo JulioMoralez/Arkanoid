@@ -1,16 +1,12 @@
 package pack.Arkanoid;
 
-import pack.Level;
-
 import java.awt.*;
 import java.util.Objects;
 
 
-public class Brick {
+public class Brick extends MyObject{
 
     private int id;
-    private int posX;
-    private int posY;
     private int w;
     private int h;
     private int type;
@@ -46,21 +42,6 @@ public class Brick {
         }
     }
 
-    public int getPosX() {
-        return posX;
-    }
-
-    public void setPosX(int posX) {
-        this.posX = posX;
-    }
-
-    public int getPosY() {
-        return posY;
-    }
-
-    public void setPosY(int posY) {
-        this.posY = posY;
-    }
 
     public int getW() {
         return w;

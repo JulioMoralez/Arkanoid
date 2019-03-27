@@ -1,12 +1,9 @@
 package pack.Arkanoid;
 
-import pack.Level;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -18,6 +15,9 @@ public class Arkanoid extends JFrame{
     public static List<Ball> balls = new CopyOnWriteArrayList<>();
     public static List<Bat> bats = new CopyOnWriteArrayList<>();
     public static List<Brick> bricks = new CopyOnWriteArrayList<>();
+    public static List<Bullet> bullets = new CopyOnWriteArrayList<>();
+    public static List<Bonus> bonuses = new CopyOnWriteArrayList<>();
+
     private Game game;
     private Menu menu;
 
@@ -39,12 +39,17 @@ public class Arkanoid extends JFrame{
         g.setColor(Color.GREEN);
         for (Brick brick:bricks){
             g.setColor(brick.getColor());
-            g.fillRect(brick.getPosX(),brick.getPosY(),brick.getW(),brick.getH());
+            g.fillRect((int)brick.getPosX(),(int)brick.getPosY(),brick.getW(),brick.getH());
         }
 
         g.setColor(Color.YELLOW);
         for (Ball ball: balls){
             g.fillOval((int)ball.getPosX(),(int)ball.getPosY(),ball.getSize(),ball.getSize());
+        }
+
+        g.setColor(Color.RED);
+        for (Bullet bullet: bullets){
+            g.fillOval((int)bullet.getPosX(),(int)bullet.getPosY(),bullet.getSize(),bullet.getSize());
         }
 
         g.setFont(new Font("TimesRoman",Font.BOLD,30));
@@ -58,16 +63,43 @@ public class Arkanoid extends JFrame{
         g.setColor(Color.RED);
         g.fillOval(WINDOW_SIZE_W+10,170+menu.getCurrentMenuItem()*30,40,40);
 
-        g.setColor(Color.GRAY);
         for (Bat bat: bats){
             switch (bat.getType()){
-                case 1:
-                case 3:
+                case DOWN:
+                case UP:
+                    g.setColor(Color.GRAY);
                     g.fillRect((int)bat.getPosX(),(int)bat.getPosY(),bat.getSize(),bat.getFat());
+                    g.setColor(Color.RED);
+                    g.fillRect((int)bat.getPosX()+bat.getSize()/2-(int)bat.getShootReloadSize()/2,(int)bat.getPosY()+bat.getFat()/2,(int)bat.getShootReloadSize(),bat.getFat()/3);
+                    if (bat.isShootReady()){
+                        if (bat.getType()==BatType.DOWN){
+                            g.fillOval((int)bat.getPosX(),(int)bat.getPosY(),20,20);
+                            g.fillOval((int)bat.getPosX()+bat.getSize()-20,(int)bat.getPosY(),20,20);
+                        }
+                        else {
+                            g.fillOval((int)bat.getPosX(),(int)bat.getPosY()-10,20,20);
+                            g.fillOval((int)bat.getPosX()+bat.getSize()-20,(int)bat.getPosY()-10,20,20);
+                        }
+
+                    }
                     break;
-                case 2:
-                case 4:
+                case LEFT:
+                case RIGHT:
+                    g.setColor(Color.GRAY);
                     g.fillRect((int)bat.getPosX(),(int)bat.getPosY(),bat.getFat(),bat.getSize());
+                    g.setColor(Color.RED);
+                    g.fillRect((int)bat.getPosX()+bat.getFat()/2,(int)bat.getPosY()+bat.getSize()/2-(int)bat.getShootReloadSize()/2,bat.getFat()/3,(int)bat.getShootReloadSize());
+                    if (bat.isShootReady()){
+                        if (bat.getType()==BatType.LEFT){
+                            g.fillOval((int)bat.getPosX()-10,(int)bat.getPosY(),20,20);
+                            g.fillOval((int)bat.getPosX()-10,(int)bat.getPosY()+bat.getSize()-20,20,20);
+                        }
+                        else {
+                            g.fillOval((int)bat.getPosX(),(int)bat.getPosY(),20,20);
+                            g.fillOval((int)bat.getPosX(),(int)bat.getPosY()+bat.getSize()-20,20,20);
+                        }
+
+                    }
                     break;
             }
         }
@@ -116,9 +148,8 @@ public class Arkanoid extends JFrame{
                         case 2:
                             System.exit(0);
                             break;
-
-
                     }
+
                 }
 
             }

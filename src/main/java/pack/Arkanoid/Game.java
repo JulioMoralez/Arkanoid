@@ -1,9 +1,6 @@
 package pack.Arkanoid;
 
-import pack.Level;
-
-import static pack.Arkanoid.Arkanoid.balls;
-import static pack.Arkanoid.Arkanoid.bats;
+import static pack.Arkanoid.Arkanoid.*;
 
 public class Game {
 
@@ -51,6 +48,12 @@ public class Game {
                 for (Ball ball:balls) {
                     ball.moveBall();
                 }
+                for (Bonus bonus:bonuses){
+                    bonus.moveBonus();
+                }
+                for (Bullet bullet:bullets){
+                    bullet.moveBullet();
+                }
                 collision.result();
                 try {
                     Thread.sleep(10);
@@ -71,10 +74,9 @@ public class Game {
                 newBallOnBat();
                 while (Level.levelHP>0){
                     if (balls.size()==0){
-
                         newBallOnBat();
                     }
-                 //   System.out.println(balls.size());
+
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
@@ -93,7 +95,10 @@ public class Game {
     private void newBallOnBat() {
         if (currentLevel==0) return;
         bats.clear();
-        bats.add(new Bat(1));
+        bats.add(new Bat(BatType.DOWN));
+//        bats.add(new Bat(BatType.LEFT));
+//        bats.add(new Bat(BatType.RIGHT));
+//        bats.add(new Bat(BatType.UP));
         balls.add(new Ball());
         balls.get(0).setBat(bats.get(0));
         bats.get(0).ballAdd(balls.get(0));

@@ -1,30 +1,25 @@
 package pack.Arkanoid;
 
-import pack.Level;
-
 import java.util.Random;
 
-public class Ball {
+public class Ball extends MyObject {
+
+    private double onBatX;
+    private double onBatY;
+    private Bat bat;
+    private int state=0;
 
     public Ball(){
         state=1;
         size=20;
-        speed=5.0;
+        speed=5;
         posX=-100;
         posY=-100;
         Random random = new Random();
-        dx=-speed*Math.cos(random.nextDouble());
-        dy=-speed*Math.sin(random.nextDouble());
+        dX=-speed*Math.cos(random.nextDouble());
+        dY=-speed*Math.sin(random.nextDouble());
     }
-    private double posX;
-    private double posY;
-    private double onBatX;
-    private double onBatY;
 
-
-
-    private int size;
-    private Bat bat;
 
     public int getState() {
         return state;
@@ -34,49 +29,24 @@ public class Ball {
         this.state = state;
     }
 
-    private int state=0;
-
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
-
-
-
-    private double dx;
-    private double dy;
-
-
-    private double speed;
-
-    public double getPosX() {
-        return posX;
-    }
-
-    public double getPosY() {
-        return posY;
-    }
 
     public void setBat(Bat bat) {
         state=0;
         this.bat = bat;
         switch (bat.getType()){
-            case 1:
+            case DOWN:
                 onBatX=bat.getSize()*0.3;
                 onBatY=-size;
                 break;
-            case 2:
+            case RIGHT:
                 onBatX=-size;
                 onBatY=bat.getSize()*0.3;
                 break;
-            case 3:
+            case UP:
                 onBatX=bat.getSize()*0.3;
                 onBatY=bat.getFat();
                 break;
-            case 4:
+            case LEFT:
                 onBatX=bat.getFat();
                 onBatY=bat.getSize()*0.3;
                 break;
@@ -91,25 +61,25 @@ public class Ball {
             double batHalfSize=bat.getSize()/2.0;
 
             switch (bat.getType()){
-                case 1:
+                case DOWN:
                     pos=posX-bat.getPosX()+size/2.0;
                     t = ((90*(batHalfSize-pos)/batHalfSize)-90)*Math.PI/-180;
                     break;
-                case 2:
+                case RIGHT:
                     pos=posY-bat.getPosY()+size/2.0;
                     t = ((-90*(batHalfSize-pos)/batHalfSize))*Math.PI/-180;
                     break;
-                case 3:
+                case UP:
                     pos=posX-bat.getPosX()+size/2.0;
                     t = ((90*(batHalfSize-pos)/batHalfSize)-90)*Math.PI/180;
                     break;
-                case 4:
+                case LEFT:
                     pos=posY-bat.getPosY()+size/2.0;
                     t = ((-90*(batHalfSize-pos)/batHalfSize)-180)*Math.PI/180;
                     break;
     }
-            dx=-speed*Math.cos(t);
-            dy=-speed*Math.sin(t);
+            dX=-speed*Math.cos(t);
+            dY=-speed*Math.sin(t);
     }
 
     void moveBall(){
@@ -118,29 +88,29 @@ public class Ball {
             posY=bat.getPosY()+onBatY;
         }
         if (state==1){
-            posX += dx;
-            posY += dy;
+            posX += dX;
+            posY += dY;
             if (posX <20){
-                dx=Math.abs(dx);
+                dX=Math.abs(dX);
             }
             if (posX+size+20 > Arkanoid.WINDOW_SIZE_W){
-                dx=-Math.abs(dx);
+                dX=-Math.abs(dX);
             }
             if (posY <40){
-                dy=Math.abs(dy);
+                dY=Math.abs(dY);
             }
             if (posY+size >Arkanoid.WINDOW_SIZE_H){
-                //dy=-Math.abs(dy);
                 Arkanoid.balls.remove(this);
             }
         }
     }
 
     void inversX(){
-        dx=-dx;
+        dX=-dX;
     }
 
     void inversY(){
-        dy=-dy;
+
+        dY=-dY;
     }
 }

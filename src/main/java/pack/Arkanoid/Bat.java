@@ -5,21 +5,29 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static pack.Arkanoid.Arkanoid.WINDOW_SIZE_W;
-import static pack.Arkanoid.Arkanoid.WINDOW_SIZE_H;
+import static pack.Arkanoid.Arkanoid.*;
 
 
-public class Bat {
+public class Bat extends MyObject{
 
-    private int type;
-    private double posX;
-    private double posY;
-    private double dX;
-    private double dY;
+    private BatType type;
+
+    public boolean isShootReady() {
+        return shootReady;
+    }
+
+    private boolean shootReady=true;
+    private int shootReload;
+
+    public double getShootReloadSize() {
+        return shootReloadSize;
+    }
+
+    private double shootReloadSize;
+
 
     private int fat;
 
-    private int size;
     private Set<Integer> startKeyCode = new HashSet<>();
     private List<Ball> balls = new ArrayList<>();
 
@@ -27,48 +35,37 @@ public class Bat {
         balls.add(ball);
     }
 
-    Bat(int type){
+    Bat(BatType type){
         size=200;
+        shootReloadSize=200;
         fat=10;
         this.type=type;
         switch (type) {
-           case 1:
+            case DOWN:
                posX = (WINDOW_SIZE_W - size) / 2.0;
                posY = WINDOW_SIZE_H-fat-10;
                break;
-           case 2:
+            case RIGHT:
                posX = WINDOW_SIZE_W-fat-10;
                posY = (WINDOW_SIZE_H - size) / 2.0;;
                break;
-           case 3:
+            case UP:
                posX = (WINDOW_SIZE_W - size) / 2.0;
                posY = 30;
                break;
-           case 4:
+            case LEFT:
                posX = 10;
                posY = (WINDOW_SIZE_H - size) / 2.0;;
                break;
         }
     }
-    public int getType() {
+    public BatType getType() {
         return type;
     }
 
-    public double getPosX() {
-        return posX;
-    }
 
-    public double getPosY() {
-        return posY;
-    }
 
-    public int getSize() {
-        return size;
-    }
 
-    public void setSize(int size) {
-        this.size = size;
-    }
 
     public int getFat() {
         return fat;
@@ -83,10 +80,9 @@ public class Bat {
     }
 
     public void moveBat(int keyCode) {
-
         switch (keyCode) {
             case 65: {
-                if ((!startKeyCode.contains(keyCode)) && ((type==1) || (type==3))) {
+                if ((!startKeyCode.contains(keyCode)) && ((type==BatType.DOWN) || (type==BatType.UP))) {
                     dX = -1;
                     dY = 0;
                     startKeyCode.add(keyCode);
@@ -96,7 +92,7 @@ public class Bat {
                 break;
             }
             case 68: {
-                if ((!startKeyCode.contains(keyCode)) && ((type==1) || (type==3))) {
+                if ((!startKeyCode.contains(keyCode)) && ((type==BatType.DOWN) || (type==BatType.UP))) {
                     dX = 1;
                     dY = 0;
                     startKeyCode.add(keyCode);
@@ -106,7 +102,7 @@ public class Bat {
                 break;
             }
             case 87: {
-                if ((!startKeyCode.contains(keyCode)) && ((type==2) || (type==4))) {
+                if ((!startKeyCode.contains(keyCode)) && ((type==BatType.LEFT) || (type==BatType.RIGHT))) {
                     dX = 0;
                     dY = -1;
                     startKeyCode.add(keyCode);
@@ -115,7 +111,7 @@ public class Bat {
                 break;
             }
             case 83: {
-                if ((!startKeyCode.contains(keyCode)) && ((type==2) || (type==4))) {
+                if ((!startKeyCode.contains(keyCode)) && ((type==BatType.LEFT) || (type==BatType.RIGHT))) {
                     dX = 0;
                     dY = 1;
                     startKeyCode.add(keyCode);
@@ -123,14 +119,51 @@ public class Bat {
                 }
                 break;
             }
-            case 32:{
+            case 70:{
                // if (type==1){
                     for (Ball ball: balls) {
                         ball.setState(1);
                         ball.getDeg(this);
                     }
              //   }
+                break;
             }
+            case 32:
+                shoot();
+                break;
+        }
+    }
+
+    private void shoot() {
+        if (shootReady){
+            shootReady=false;
+            Arkanoid.bullets.add(new Bullet(posX,posY,type));
+            switch (type){
+                case UP:
+                case DOWN:
+                    Arkanoid.bullets.add(new Bullet(posX+size-20,posY,type));
+                    break;
+                case LEFT:
+                case RIGHT:
+                    Arkanoid.bullets.add(new Bullet(posX,posY+size-20,type));
+                    break;
+            }
+            new Thread(()->{
+                shootReload=0;
+                double scale=size/30.0;
+                while (shootReload<=30){
+                    shootReloadSize=shootReload*scale;
+                    try {
+                        Thread.sleep(16);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(shootReloadSize);
+                    shootReload++;
+                }
+
+                shootReady=true;
+            }).start();
         }
     }
 

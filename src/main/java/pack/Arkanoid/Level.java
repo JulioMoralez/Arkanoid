@@ -1,4 +1,4 @@
-package pack;
+package pack.Arkanoid;
 
 import pack.Arkanoid.Arkanoid;
 import pack.Arkanoid.Brick;
@@ -15,6 +15,8 @@ public class Level {
         Arkanoid.bricks.clear();
         Arkanoid.balls.clear();
         Arkanoid.bats.clear();
+        Arkanoid.bullets.clear();
+        Arkanoid.bonuses.clear();
         int i=0;
         switch (level){
             case 0:

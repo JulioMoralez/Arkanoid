@@ -104,7 +104,7 @@ public class Arkanoid extends JFrame{
 //        bats.add(new Bat(4));
 
         balls.add(new Ball());
-//        balls.add(new Ball());
+        balls.add(new Ball());
 //        balls.add(new Ball());
 //        balls.add(new Ball());
 

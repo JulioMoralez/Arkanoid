@@ -5,6 +5,7 @@ public class Bullet extends MyObject{
     public Bullet(double posX, double posY, BatType type){
         this.posX=posX;
         this.posY=posY;
+        size=20;
         switch (type){
             case DOWN:
                 dX=0;

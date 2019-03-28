@@ -1,12 +1,10 @@
 package pack.Arkanoid;
 
 import java.awt.*;
-import java.util.Objects;
 
 
 public class Brick extends MyObject{
 
-    private int id;
     private int w;
     private int h;
     private int type;
@@ -18,8 +16,7 @@ public class Brick extends MyObject{
                                         new Color(50,0,200)};
 
 
-    public Brick(int id, int posX, int posY, int color, int type){
-        this.id=id;
+    public Brick(int posX, int posY, int color, int type){
         this.posX=posX;
         this.posY=posY;
         this.type=type;
@@ -75,21 +72,12 @@ public class Brick extends MyObject{
         this.color = color;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Brick brick = (Brick) o;
-        return id == brick.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 
     public void hit() {
         if (--hp==0){
+            if (random.nextInt(100)<20){
+                Bonus.createBonus(this);
+            }
             Level.levelHP--;
             Arkanoid.bricks.remove(this);
         }

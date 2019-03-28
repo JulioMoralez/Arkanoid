@@ -32,14 +32,24 @@ public class Arkanoid extends JFrame{
         g=buffer.getGraphics();
 
         g.setColor(Color.GREEN);
-        g.fillRect(0,0,WINDOW_SIZE_W,WINDOW_SIZE_H);
-        g.setColor(Color.BLACK);
+        if (Game.isBreakLevel()){
+            g.fillRect(0,0,WINDOW_SIZE_W,WINDOW_SIZE_H-20);
+            g.setColor(Color.BLUE);
+            g.fillRect(0,WINDOW_SIZE_H-40,WINDOW_SIZE_W,40);
+        }
+        else {
+            g.fillRect(0,0,WINDOW_SIZE_W,WINDOW_SIZE_H);
+        }
+        g.setColor(Color.BLUE);
         g.fillRect(20,40,WINDOW_SIZE_W-40,WINDOW_SIZE_H-40);
+
 
         g.setColor(Color.GREEN);
         for (Brick brick:bricks){
+            g.setColor(new Color(0,0,200));
+            g.fillRect((int)brick.getPosX()+16,(int)brick.getPosY()+16,brick.getW(),brick.getH());
             g.setColor(brick.getColor());
-            g.fillRect((int)brick.getPosX(),(int)brick.getPosY(),brick.getW(),brick.getH());
+            g.fillRect((int)brick.getPosX()+1,(int)brick.getPosY()+1,brick.getW()-2,brick.getH()-2);
         }
 
         g.setColor(Color.YELLOW);
@@ -52,16 +62,26 @@ public class Arkanoid extends JFrame{
             g.fillOval((int)bullet.getPosX(),(int)bullet.getPosY(),bullet.getSize(),bullet.getSize());
         }
 
+        for (Bonus bonus: bonuses){
+            g.setColor(bonus.getBonusType().getColor());
+            g.fillRoundRect((int)bonus.getPosX(),(int)bonus.getPosY(),bonus.getSize()*2,bonus.getSize(),bonus.getSize(),bonus.getSize());
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("TimesRoman",Font.BOLD,20));
+            g.drawString(bonus.getBonusType().getName(),(int)bonus.getPosX()+bonus.getSize()-6,(int)bonus.getPosY()+bonus.getSize()-3);
+        }
+
+        g.setColor(Color.LIGHT_GRAY);
+        g.fillRect(WINDOW_SIZE_W,0,200,WINDOW_SIZE_H);
+        g.setColor(Color.RED);
         g.setFont(new Font("TimesRoman",Font.BOLD,30));
         g.drawString("Menu",WINDOW_SIZE_W+50,100);
         int i=0;
         for (String str:menu.getNameMenuItem()){
             g.drawString(str,WINDOW_SIZE_W+50,200+i++*30);
         }
-        g.setColor(Color.LIGHT_GRAY);
-        g.fillRect(WINDOW_SIZE_W+10,160,40,120);
         g.setColor(Color.RED);
         g.fillOval(WINDOW_SIZE_W+10,170+menu.getCurrentMenuItem()*30,40,40);
+        g.drawString("Life: " + Game.life,WINDOW_SIZE_W+50,300);
 
         for (Bat bat: bats){
             switch (bat.getType()){

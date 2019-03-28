@@ -8,10 +8,36 @@ public class Game {
     private Level level = new Level();
     private int currentLevel;
     private int maxLevel;
-    private int hp;
+
+
+
+    public static int life;
+
+    public static boolean isBreakLevel() {
+        return breakLevel;
+    }
+
+    public static void setBreakLevel(boolean breakLevel) {
+        Game.breakLevel = breakLevel;
+    }
+
+    private static boolean breakLevel;
+
+    public static boolean isQuatro() {
+        return quatro;
+    }
+
+    public static void setQuatro(boolean quatro) {
+        Game.quatro = quatro;
+    }
+
+    private static boolean quatro;
+
+
 
     public Game(){
         maxLevel=2;
+        life=3;
         start();
         playGame();
     }
@@ -75,8 +101,8 @@ public class Game {
                 while (Level.levelHP>0){
                     if (balls.size()==0){
                         newBallOnBat();
-                    }
 
+                    }
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
@@ -95,6 +121,7 @@ public class Game {
     private void newBallOnBat() {
         if (currentLevel==0) return;
         bats.clear();
+        quatro=false;
         bats.add(new Bat(BatType.DOWN));
 //        bats.add(new Bat(BatType.LEFT));
 //        bats.add(new Bat(BatType.RIGHT));
@@ -106,6 +133,7 @@ public class Game {
 
     public void newGame(){
         currentLevel=0;
+        life=3;
         Level.levelHP=0;
     }
 }

@@ -1,22 +1,27 @@
 package pack.Arkanoid;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static pack.Arkanoid.Arkanoid.*;
 
 
 public class Bat extends MyObject{
 
+    private int defaultSize;
     private BatType type;
+
+    private int modeSpeed;
+
 
     public boolean isShootReady() {
         return shootReady;
     }
 
-    private boolean shootReady=true;
+    private boolean shootReady;
+    private boolean magnit;
     private int shootReload;
 
     public double getShootReloadSize() {
@@ -26,10 +31,20 @@ public class Bat extends MyObject{
     private double shootReloadSize;
 
 
+
+
+    public boolean isMagnit() {
+        return magnit;
+    }
+
+    public void setMagnit(boolean magnit) {
+        this.magnit = magnit;
+    }
+
     private int fat;
 
     private Set<Integer> startKeyCode = new HashSet<>();
-    private List<Ball> balls = new ArrayList<>();
+    private List<Ball> balls = new CopyOnWriteArrayList<>();
 
     public void ballAdd(Ball ball){
         balls.add(ball);
@@ -37,6 +52,7 @@ public class Bat extends MyObject{
 
     Bat(BatType type){
         size=200;
+        defaultSize=size;
         shootReloadSize=200;
         fat=10;
         this.type=type;
@@ -47,7 +63,7 @@ public class Bat extends MyObject{
                break;
             case RIGHT:
                posX = WINDOW_SIZE_W-fat-10;
-               posY = (WINDOW_SIZE_H - size) / 2.0;;
+               posY = (WINDOW_SIZE_H - size) / 2.0;
                break;
             case UP:
                posX = (WINDOW_SIZE_W - size) / 2.0;
@@ -55,7 +71,7 @@ public class Bat extends MyObject{
                break;
             case LEFT:
                posX = 10;
-               posY = (WINDOW_SIZE_H - size) / 2.0;;
+               posY = (WINDOW_SIZE_H - size) / 2.0;
                break;
         }
     }
@@ -120,12 +136,11 @@ public class Bat extends MyObject{
                 break;
             }
             case 70:{
-               // if (type==1){
-                    for (Ball ball: balls) {
+                    for (Ball ball : balls) {
                         ball.setState(1);
                         ball.getDeg(this);
-                    }
-             //   }
+                    balls.clear();
+                }
                 break;
             }
             case 32:
@@ -158,7 +173,6 @@ public class Bat extends MyObject{
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    System.out.println(shootReloadSize);
                     shootReload++;
                 }
 
@@ -175,8 +189,19 @@ public class Bat extends MyObject{
             while (startKeyCode.contains(keyCode)){
                 x=posX+dX;
                 y=posY+dY;
-                if ((x>=20) && (x<=WINDOW_SIZE_W-size-20)){
-                    posX=x;
+                if ((Game.isBreakLevel()) && (type==BatType.DOWN)){
+                    if ((x>=-size+20) && (x<=WINDOW_SIZE_W-20)){
+                        posX=x;
+                    }
+                    else {
+                        Game.setBreakLevel(false);
+                        Level.levelHP=0;
+                    }
+                }
+                else {
+                    if ((x>=20) && (x<=WINDOW_SIZE_W-size-20)){
+                        posX=x;
+                    }
                 }
                 if ((y>=40) && (y<=WINDOW_SIZE_H-size-20)){
                     posY=y;
@@ -188,5 +213,100 @@ public class Bat extends MyObject{
                 }
             }
         }).start();
+    }
+
+    public void setBonus(Bonus bonus){
+        double speedKoef=1.0;
+        double dKoef=1.0;
+        if (type!=BatType.DOWN)
+            return;
+        switch (bonus.getBonusType()){
+            case EXPAND:
+                size=(int)(defaultSize*1.5);
+                shootReloadSize=size;
+                if (posX+size>=WINDOW_SIZE_W){
+                    posX=WINDOW_SIZE_W-size-20;
+                }
+                break;
+            case DIVIDE:
+                for (Ball ball:this.balls){
+                    if (ball.posX+ball.size/2.0>=this.posX+(defaultSize/2.0)){
+                        ball.setState(1);
+                        ball.getDeg(this);
+                    }
+                }
+                size=(int)(defaultSize/2.0);
+                shootReloadSize=size;
+                break;
+
+            case LASER:
+                shootReady=true;
+                break;
+
+            case SLOW:
+                if (modeSpeed !=1){
+                    if (modeSpeed ==0){
+                        speedKoef=0.5;
+                        dKoef=speedKoef;
+                        modeSpeed =1;
+                    }
+                    else {
+                        speedKoef=0.5;
+                        modeSpeed =0;
+                    }
+                    for (Ball ball:Arkanoid.balls){
+                        ball.setSpeed(ball.getSpeed()*speedKoef);
+                        ball.setdX(ball.getDefaultSpeedDX()*dKoef);
+                        ball.setdY(ball.getDefaultSpeedDY()*dKoef);
+                    }
+                }
+                break;
+            case FASTER:
+                if (modeSpeed !=2){
+                    if (modeSpeed ==0){
+                        speedKoef=2.0;
+                        dKoef=speedKoef;
+                        modeSpeed =2;
+                    }
+                    else {
+                        speedKoef=2.0;
+                        modeSpeed =0;
+                    }
+                    for (Ball ball:Arkanoid.balls){
+                        ball.setSpeed(ball.getSpeed()*speedKoef);
+                        ball.setdX(ball.getDefaultSpeedDX()*dKoef);
+                        ball.setdY(ball.getDefaultSpeedDY()*dKoef);
+                    }
+                }
+                break;
+            case BREAK:
+                Game.setBreakLevel(true);
+                break;
+
+            case CATCH:
+                magnit=true;
+                break;
+
+            case PLAYER:
+                Game.life++;
+                break;
+            case QUATRO:
+                if (!Game.isQuatro()){
+                    Game.setQuatro(true);
+                    bats.add(new Bat(BatType.LEFT));
+                    bats.add(new Bat(BatType.RIGHT));
+                    bats.add(new Bat(BatType.UP));
+                }
+
+                break;
+            case MULTI:
+                for (Ball ball:Arkanoid.balls){
+                    Arkanoid.balls.add(new Ball(ball.getPosX(),ball.getPosY()));
+                    Arkanoid.balls.add(new Ball(ball.getPosX(),ball.getPosY()));
+                    Arkanoid.balls.add(new Ball(ball.getPosX(),ball.getPosY()));
+                }
+                break;
+
+        }
     }
 }

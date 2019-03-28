@@ -3,21 +3,71 @@ package pack.Arkanoid;
 import java.util.Random;
 
 public class Ball extends MyObject {
+    public double getOnBatX() {
+        return onBatX;
+    }
+
+    public void setOnBatX(double onBatX) {
+        this.onBatX = onBatX;
+    }
+
+    public double getOnBatY() {
+        return onBatY;
+    }
+
+    public void setOnBatY(double onBatY) {
+        this.onBatY = onBatY;
+    }
 
     private double onBatX;
     private double onBatY;
     private Bat bat;
-    private int state=0;
+    private int state;
+
+    public double getDefaultSpeedDX() {
+        return defaultSpeedDX;
+    }
+
+    public void setDefaultSpeedDX(double defaultSpeedDX) {
+        this.defaultSpeedDX = defaultSpeedDX;
+    }
+
+    public double getDefaultSpeedDY() {
+        return defaultSpeedDY;
+    }
+
+    public void setDefaultSpeedDY(double defaultSpeedDY) {
+        this.defaultSpeedDY = defaultSpeedDY;
+    }
+
+    private double defaultSpeedDX;
+    private double defaultSpeedDY;
+
+    public double getDefaultSpeed() {
+        return defaultSpeed;
+    }
+
+    private double defaultSpeed;
 
     public Ball(){
         state=1;
         size=20;
         speed=5;
+        defaultSpeed=speed;
         posX=-100;
         posY=-100;
         Random random = new Random();
-        dX=-speed*Math.cos(random.nextDouble());
-        dY=-speed*Math.sin(random.nextDouble());
+        int r = random.nextInt(100);
+        dX=-speed*Math.cos(r);
+        dY=-speed*Math.sin(r);
+        defaultSpeedDX=dX;
+        defaultSpeedDY=dY;
+    }
+
+    public Ball(double posX, double posY){
+        this();
+        this.posX=posX;
+        this.posY=posY;
     }
 
 
@@ -80,6 +130,8 @@ public class Ball extends MyObject {
     }
             dX=-speed*Math.cos(t);
             dY=-speed*Math.sin(t);
+            defaultSpeedDX=-defaultSpeed*Math.cos(t);
+            defaultSpeedDY=-defaultSpeed*Math.sin(t);
     }
 
     void moveBall(){
@@ -92,12 +144,15 @@ public class Ball extends MyObject {
             posY += dY;
             if (posX <20){
                 dX=Math.abs(dX);
+                defaultSpeedDX=Math.abs(defaultSpeedDX);
             }
             if (posX+size+20 > Arkanoid.WINDOW_SIZE_W){
                 dX=-Math.abs(dX);
+                defaultSpeedDX=-Math.abs(defaultSpeedDX);
             }
             if (posY <40){
                 dY=Math.abs(dY);
+                defaultSpeedDY=Math.abs(defaultSpeedDY);
             }
             if (posY+size >Arkanoid.WINDOW_SIZE_H){
                 Arkanoid.balls.remove(this);
@@ -107,10 +162,11 @@ public class Ball extends MyObject {
 
     void inversX(){
         dX=-dX;
+        defaultSpeedDX=-defaultSpeedDX;
     }
 
     void inversY(){
-
         dY=-dY;
+        defaultSpeedDY=-defaultSpeedDY;
     }
 }

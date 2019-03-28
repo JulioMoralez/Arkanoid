@@ -1,5 +1,7 @@
 package pack.Arkanoid;
 
+import java.util.Random;
+
 public abstract class MyObject {
     protected double posX=-100.0;
     protected double posY=-100.0;
@@ -7,6 +9,7 @@ public abstract class MyObject {
     protected double dX=0.0;
     protected double dY=0.0;
     protected int size=20;
+    protected Random random = new Random();
 
     public double getPosX() {
         return posX;

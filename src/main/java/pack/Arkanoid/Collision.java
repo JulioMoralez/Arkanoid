@@ -27,7 +27,21 @@ public class Collision{
                             (Y<bat.getPosY()+bat.getSize()) &&
                             (X-ball.getSize()/2.0<bat.getPosX()+bat.getFat()))  )
                                 {
-                                    ball.getDeg(bat);
+                                    if (bat.isMagnit()){
+                                        ball.setState(0);
+                                        ball.setBat(bat);
+                                        bat.ballAdd(ball);
+                                        if ((bat.getType()==BatType.DOWN) || (bat.getType()==BatType.UP)){
+                                            ball.setOnBatX(ball.getPosX()-bat.getPosX());
+                                        }
+                                        if ((bat.getType()==BatType.LEFT) || (bat.getType()==BatType.RIGHT)){
+                                            ball.setOnBatY(ball.getPosY()-bat.getPosY());
+                                        }
+                                    }
+                                    else {
+                                        ball.getDeg(bat);
+                                    }
+
                                 }
             }
             for (Brick brick:Arkanoid.bricks){
@@ -59,8 +73,9 @@ public class Collision{
             }
         }
         for (Bullet bullet:Arkanoid.bullets) {
-            X = bullet.getPosX() + bullet.getSize() / 2.0;
-            Y = bullet.getPosY() + bullet.getSize() / 2.0;
+            X = bullet.getPosX() + bullet.getSize()/2.0;
+            Y = bullet.getPosY() + bullet.getSize()/2.0;
+
             for (Brick brick:Arkanoid.bricks) {
                 if (    (X > brick.getPosX()) &&
                         (X < brick.getPosX() + brick.getW()) &&
@@ -69,6 +84,22 @@ public class Collision{
                     {
                         brick.hit();
                         Arkanoid.bullets.remove(bullet);
+                    }
+                }
+            }
+        }
+        for (Bonus bonus:Arkanoid.bonuses) {
+            X = bonus.getPosX() + bonus.getSize()/2.0;
+            Y = bonus.getPosY() + bonus.getSize()/2.0;
+
+            for (Bat bat:Arkanoid.bats) {
+                if (    (bat.getType()==BatType.DOWN) &&
+                        (X > bat.getPosX()) &&
+                        (X < bat.getPosX() + bat.getSize()) &&
+                        (Y > bat.getPosY())) {
+                    {
+                        bat.setBonus(bonus);
+                        Arkanoid.bonuses.remove(bonus);
                     }
                 }
             }

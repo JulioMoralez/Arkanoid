@@ -43,29 +43,6 @@ public class Game {
     }
 
     private void start() {
-
-//        bats.add(new Bat(1));
-//        bats.add(new Bat(2));
-//        bats.add(new Bat(3));
-//        bats.add(new Bat(4));
-
-//        balls.add(new Ball());
-        //       balls.add(new Ball());
-//        balls.add(new Ball());
-//        balls.add(new Ball());
-
-//        balls.get(0).setBat(bats.get(0));
-//        balls.get(1).setBat(bats.get(1));
-//        balls.get(2).setBat(bats.get(2));
-//        balls.get(3).setBat(bats.get(3));
-
-//        bats.get(0).ballAdd(balls.get(0));
-//        bats.get(1).ballAdd(balls.get(1));
-//        bats.get(2).ballAdd(balls.get(2));
-//        bats.get(3).ballAdd(balls.get(3));
-
-
-
         collision = new Collision();
 
 
@@ -120,12 +97,10 @@ public class Game {
 
     private void newBallOnBat() {
         if (currentLevel==0) return;
+        Game.setBreakLevel(false);
         bats.clear();
         quatro=false;
         bats.add(new Bat(BatType.DOWN));
-//        bats.add(new Bat(BatType.LEFT));
-//        bats.add(new Bat(BatType.RIGHT));
-//        bats.add(new Bat(BatType.UP));
         balls.add(new Ball());
         balls.get(0).setBat(bats.get(0));
         bats.get(0).ballAdd(balls.get(0));

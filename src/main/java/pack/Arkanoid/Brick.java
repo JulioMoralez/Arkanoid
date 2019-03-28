@@ -15,6 +15,17 @@ public class Brick extends MyObject{
                                         new Color(50,100,100),
                                         new Color(50,0,200)};
 
+    public boolean isHitAnim() {
+        return hitAnim;
+    }
+
+    public void setHitAnim(boolean hitAnim) {
+        this.hitAnim = hitAnim;
+    }
+
+    private boolean hitAnim;
+
+
 
     public Brick(int posX, int posY, int color, int type){
         this.posX=posX;
@@ -25,16 +36,16 @@ public class Brick extends MyObject{
         this.color=colorList[color];
         switch (type){
             case 1:
-                hp=1;
+                hp=3;
                 break;
             case 2:
-                hp=2;
+                hp=3;
                 break;
             case 3:
-                hp=1;
+                hp=3;
                 break;
             case 4:
-                hp=1;
+                hp=3;
                 break;
         }
     }
@@ -80,6 +91,18 @@ public class Brick extends MyObject{
             }
             Level.levelHP--;
             Arkanoid.bricks.remove(this);
+        }
+        else {
+            new Thread(()->{
+                hitAnim=true;
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                hitAnim=false;
+            }).start();
+
         }
     }
 }

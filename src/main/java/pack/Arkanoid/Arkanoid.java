@@ -31,7 +31,7 @@ public class Arkanoid extends JFrame{
         screen=g;
         g=buffer.getGraphics();
 
-        g.setColor(Color.GREEN);
+        g.setColor(Color.RED);
         if (Game.isBreakLevel()){
             g.fillRect(0,0,WINDOW_SIZE_W,WINDOW_SIZE_H-20);
             g.setColor(Color.BLUE);
@@ -42,19 +42,37 @@ public class Arkanoid extends JFrame{
         }
         g.setColor(Color.BLUE);
         g.fillRect(20,40,WINDOW_SIZE_W-40,WINDOW_SIZE_H-40);
+        g.setColor(new Color(0,0,200));
+        g.fillRect(20,40,WINDOW_SIZE_W-40,20);
+        g.fillRect(20,40,20,WINDOW_SIZE_H-40);
+        if (Game.isBreakLevel()) {
+            g.setColor(Color.BLUE);
+            g.fillRect(20,WINDOW_SIZE_H-30,20,30);
+        }
 
 
         g.setColor(Color.GREEN);
         for (Brick brick:bricks){
             g.setColor(new Color(0,0,200));
             g.fillRect((int)brick.getPosX()+16,(int)brick.getPosY()+16,brick.getW(),brick.getH());
+            if (brick.isHitAnim()){
+                g.setColor(Color.ORANGE);
+                g.fillRect((int)brick.getPosX()-1,(int)brick.getPosY()-1,brick.getW()+2,brick.getH()+2);
+            }
             g.setColor(brick.getColor());
             g.fillRect((int)brick.getPosX()+1,(int)brick.getPosY()+1,brick.getW()-2,brick.getH()-2);
         }
 
-        g.setColor(Color.YELLOW);
+
         for (Ball ball: balls){
+            g.setColor(Color.YELLOW);
             g.fillOval((int)ball.getPosX(),(int)ball.getPosY(),ball.getSize(),ball.getSize());
+            g.setColor(Color.DARK_GRAY);
+            g.fillOval((int)ball.getPosX()+1,(int)ball.getPosY()+1,ball.getSize()-2,ball.getSize()-2);
+            g.setColor(Color.YELLOW);
+            g.fillOval((int)ball.getPosX()+ball.getSize()/5,(int)ball.getPosY()+ball.getSize()/5,ball.getSize()/2,ball.getSize()/2);
+            g.setColor(Color.DARK_GRAY);
+            g.fillOval((int)ball.getPosX()+ball.getSize()/3,(int)ball.getPosY()+ball.getSize()/3,ball.getSize()/2,ball.getSize()/2);
         }
 
         g.setColor(Color.RED);

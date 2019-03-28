@@ -7,7 +7,6 @@ import static pack.Arkanoid.Arkanoid.bonuses;
 public class Bonus extends MyObject{
 
     private BonusType bonusType;
-    private Random random = new Random();
 
     public BonusType getBonusType() {
         return bonusType;

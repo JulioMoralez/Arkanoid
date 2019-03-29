@@ -17,44 +17,38 @@ public class Arkanoid extends JFrame{
     public static List<Brick> bricks = new CopyOnWriteArrayList<>();
     public static List<Bullet> bullets = new CopyOnWriteArrayList<>();
     public static List<Bonus> bonuses = new CopyOnWriteArrayList<>();
+    public static List<Star> stars = new CopyOnWriteArrayList<>();
+
+
 
     private Game game;
     private Menu menu;
 
 
-
-    final static int WINDOW_SIZE_W=800;
+    final static int WINDOW_SIZE_W=600;
     final static int WINDOW_SIZE_H=600;
+    final static int NUM_STARS=100;
 
     @Override
     public void paint(Graphics g) {
         screen=g;
         g=buffer.getGraphics();
 
-        g.setColor(Color.RED);
-        if (Game.isBreakLevel()){
-            g.fillRect(0,0,WINDOW_SIZE_W,WINDOW_SIZE_H-20);
-            g.setColor(Color.BLUE);
-            g.fillRect(0,WINDOW_SIZE_H-40,WINDOW_SIZE_W,40);
-        }
-        else {
-            g.fillRect(0,0,WINDOW_SIZE_W,WINDOW_SIZE_H);
-        }
+
         g.setColor(Color.BLUE);
         g.fillRect(20,40,WINDOW_SIZE_W-40,WINDOW_SIZE_H-40);
         g.setColor(new Color(0,0,200));
         g.fillRect(20,40,WINDOW_SIZE_W-40,20);
         g.fillRect(20,40,20,WINDOW_SIZE_H-40);
-        if (Game.isBreakLevel()) {
-            g.setColor(Color.BLUE);
-            g.fillRect(20,WINDOW_SIZE_H-30,20,30);
-        }
-
 
         g.setColor(Color.GREEN);
         for (Brick brick:bricks){
             g.setColor(new Color(0,0,200));
             g.fillRect((int)brick.getPosX()+16,(int)brick.getPosY()+16,brick.getW(),brick.getH());
+            if (brick.getType()==0){
+                g.setColor(Color.BLACK);
+                g.fillRect((int)brick.getPosX()-1,(int)brick.getPosY()-1,brick.getW()+2,brick.getH()+2);
+            }
             if (brick.isHitAnim()){
                 g.setColor(Color.ORANGE);
                 g.fillRect((int)brick.getPosX()-1,(int)brick.getPosY()-1,brick.getW()+2,brick.getH()+2);
@@ -62,6 +56,25 @@ public class Arkanoid extends JFrame{
             g.setColor(brick.getColor());
             g.fillRect((int)brick.getPosX()+1,(int)brick.getPosY()+1,brick.getW()-2,brick.getH()-2);
         }
+
+        if (game.getGameState()==0){
+            g.setColor(Color.WHITE);
+            for (Star star:stars){
+                g.fillOval(star.getPosX(),star.getPosY(),star.getW(),star.getH());
+            }
+        }
+
+
+        g.setColor(Color.RED);
+        g.fillRect(0,20,WINDOW_SIZE_W,20);
+        g.fillRect(0,20,20,WINDOW_SIZE_H);
+        g.fillRect(WINDOW_SIZE_W-20,20,20,WINDOW_SIZE_H);
+        if (Game.isBreakLevel()){
+            g.setColor(Color.BLUE);
+            g.fillRect(0,WINDOW_SIZE_H-40,WINDOW_SIZE_W,40);
+        }
+
+
 
 
         for (Ball ball: balls){
@@ -89,7 +102,7 @@ public class Arkanoid extends JFrame{
         }
 
         g.setColor(Color.LIGHT_GRAY);
-        g.fillRect(WINDOW_SIZE_W,0,200,WINDOW_SIZE_H);
+        g.fillRect(WINDOW_SIZE_W-4,0,200,WINDOW_SIZE_H);
         g.setColor(Color.RED);
         g.setFont(new Font("TimesRoman",Font.BOLD,30));
         g.drawString("Menu",WINDOW_SIZE_W+50,100);

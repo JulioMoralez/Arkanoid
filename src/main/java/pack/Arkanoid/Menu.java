@@ -11,6 +11,8 @@ public class Menu {
         maxMenuItem=nameMenuItem.length;
     }
 
+
+
     public int getCurrentMenuItem() {
         return currentMenuItem;
     }

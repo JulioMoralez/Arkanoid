@@ -1,13 +1,10 @@
 package pack.Arkanoid;
 
 
-import java.util.Random;
-
 
 public class Level {
 
     public static int levelHP;
-    private Random random = new Random();
 
     public void create(int level) {
         Arkanoid.bricks.clear();
@@ -21,24 +18,30 @@ public class Level {
                 i=1;
                 break;
             case 1:
-                for (int j = 0; j < 10; j++) {
-                    for (int k = 0; k <15 ; k++) {
-                        Arkanoid.bricks.add(new Brick(100+k*40,100+j*20,k%2==0?1:2,1));
-                        i++;
-                    }
-                }
+                Arkanoid.bricks.add(new Brick(++i,0,0,2,1));
+                Arkanoid.bricks.add(new Brick(++i,1,1,2,1));
+                Arkanoid.bricks.add(new Brick(++i,2,2,2,1));
+                Arkanoid.bricks.add(new Brick(++i,3,3,2,1));
+                Arkanoid.bricks.add(new Brick(++i,4,4,2,1));
+                Arkanoid.bricks.add(new Brick(++i,5,5,2,1));
+                Arkanoid.bricks.add(new Brick(++i,6,6,2,1));
+                Arkanoid.bricks.add(new Brick(++i,7,7,2,1));
+                Arkanoid.bricks.add(new Brick(++i,8,8,2,1));
+                Arkanoid.bricks.add(new Brick(++i,9,9,2,1));
+                Arkanoid.bricks.add(new Brick(++i,10,10,2,1));
+                Arkanoid.bricks.add(new Brick(++i,11,11,2,1));
+                Arkanoid.bricks.add(new Brick(++i,12,12,2,1));
+                Arkanoid.bricks.add(new Brick(++i,13,13,2,1));
                 break;
             case 2:
-                Arkanoid.bricks.add(new Brick(100,200,1,1));    i++;
-                Arkanoid.bricks.add(new Brick(140,300,2,1));    i++;
-                Arkanoid.bricks.add(new Brick(180,200,3,1));    i++;
-                Arkanoid.bricks.add(new Brick(220,300,2,1));    i++;
-                Arkanoid.bricks.add(new Brick(260,200,3,1));    i++;
-                Arkanoid.bricks.add(new Brick(300,300,2,1));    i++;
-                Arkanoid.bricks.add(new Brick(340,200,3,1));    i++;
-                Arkanoid.bricks.add(new Brick(380,300,1,1));    i++;
+                Arkanoid.bricks.add(new Brick(++i,2,2,1,1));
                 break;
             case 3:
+                for (int j = 0; j < 10; j++) {
+                    for (int k = 0; k <19; k++) {
+                        Arkanoid.bricks.add(new Brick(++i, 20+k*40,100+j*20,k%2==0?1:2,1));
+                    }
+                }
                 break;
             case 4:
                 break;

@@ -5,15 +5,20 @@ import java.awt.*;
 
 public class Brick extends MyObject{
 
+    private int id;
     private int w;
     private int h;
     private int type;
     private int hp;
     private Color color;
-    private static Color[] colorList={  new Color(200,0,0),
-                                        new Color(50,200,0),
-                                        new Color(50,100,100),
-                                        new Color(50,0,200)};
+    private static Color[] colorList={  new Color(10,10,10),
+                                        new Color(10,10,200),
+                                        new Color(10,200,10),
+                                        new Color(10,200,200),
+                                        new Color(200,10,10),
+                                        new Color(200,10,200),
+                                        new Color(200,200,10),
+                                        new Color(200,200,200)};
 
     public boolean isHitAnim() {
         return hitAnim;
@@ -27,16 +32,21 @@ public class Brick extends MyObject{
 
 
 
-    public Brick(int posX, int posY, int color, int type){
-        this.posX=posX;
-        this.posY=posY;
+    public Brick(int id, int posX, int posY, int color, int type){
+        w=40;
+        h=20;
+        this.id=id;
+        this.posX=20+posX*w;
+        this.posY=40+posY*h;
         this.type=type;
-        this.w=40;
-        this.h=20;
+
         this.color=colorList[color];
         switch (type){
+            case 0:
+                hp=-1;
+                break;
             case 1:
-                hp=3;
+                hp=1;
                 break;
             case 2:
                 hp=3;
@@ -85,7 +95,10 @@ public class Brick extends MyObject{
 
 
     public void hit() {
-        if (--hp==0){
+        if (type!=0){
+            hp--;
+        }
+        if (hp==0){
             if (random.nextInt(100)<20){
                 Bonus.createBonus(this);
             }

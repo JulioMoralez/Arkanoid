@@ -1,7 +1,5 @@
 package pack.Arkanoid;
 
-import java.util.Random;
-
 import static pack.Arkanoid.Arkanoid.bonuses;
 
 public class Bonus extends MyObject{
@@ -22,7 +20,7 @@ public class Bonus extends MyObject{
         dX=0.0;
         dY=2.0;
         bonusType=BonusType.values()[random.nextInt(BonusType.values().length)];
-
+//        bonusType=BonusType.BREAK;
 
     }
 

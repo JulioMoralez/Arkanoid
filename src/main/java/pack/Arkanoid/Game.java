@@ -10,6 +10,12 @@ public class Game {
     private int maxLevel;
 
 
+    public static int getGameState() {
+        return gameState;
+    }
+
+    private static int gameState;
+
 
     public static int life;
 
@@ -44,6 +50,7 @@ public class Game {
 
     private void start() {
         collision = new Collision();
+        Star.createStars();
 
 
         new Thread(() -> {
@@ -56,6 +63,11 @@ public class Game {
                 }
                 for (Bullet bullet:bullets){
                     bullet.moveBullet();
+                }
+                if (gameState==0){
+                    for (Star star:stars){
+                        star.moveStar();
+                    }
                 }
                 collision.result();
                 try {
@@ -107,6 +119,7 @@ public class Game {
     }
 
     public void newGame(){
+        gameState=1;
         currentLevel=0;
         life=3;
         Level.levelHP=0;

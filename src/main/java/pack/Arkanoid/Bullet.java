@@ -5,6 +5,7 @@ public class Bullet extends MyObject{
     public Bullet(double posX, double posY, BatType type){
         this.posX=posX;
         this.posY=posY;
+        speed=10;
         size=20;
         switch (type){
             case DOWN:
@@ -25,6 +26,8 @@ public class Bullet extends MyObject{
                 break;
         }
     }
+
+
 
     public void moveBullet() {
 

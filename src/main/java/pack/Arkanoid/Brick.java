@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class Brick extends MyObject{
 
-    private int id;
+  //  private int id;
     private int w;
     private int h;
     private int type;
@@ -18,7 +18,8 @@ public class Brick extends MyObject{
                                         new Color(200,10,10),
                                         new Color(200,10,200),
                                         new Color(200,200,10),
-                                        new Color(200,200,200)};
+                                        new Color(250,250,250),
+                                        new Color(140,140,140)};
 
     public boolean isHitAnim() {
         return hitAnim;
@@ -32,10 +33,9 @@ public class Brick extends MyObject{
 
 
 
-    public Brick(int id, int posX, int posY, int color, int type){
-        w=40;
-        h=20;
-        this.id=id;
+    public Brick(int posX, int posY, int color, int type){
+        w=70;
+        h=34;
         this.posX=20+posX*w;
         this.posY=40+posY*h;
         this.type=type;
@@ -49,13 +49,13 @@ public class Brick extends MyObject{
                 hp=1;
                 break;
             case 2:
-                hp=3;
+                hp=2;
                 break;
             case 3:
                 hp=3;
                 break;
             case 4:
-                hp=3;
+                hp=4;
                 break;
         }
     }
@@ -99,9 +99,10 @@ public class Brick extends MyObject{
             hp--;
         }
         if (hp==0){
-            if (random.nextInt(100)<20){
-                Bonus.createBonus(this);
-            }
+//            if (random.nextInt(100)<20){
+               Bonus.createBonus(posX, posY);
+//            }
+            Game.setScore(Game.getScore()+100);
             Level.levelHP--;
             Arkanoid.bricks.remove(this);
         }

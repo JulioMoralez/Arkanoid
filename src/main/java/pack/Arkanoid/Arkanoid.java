@@ -10,24 +10,28 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Arkanoid extends JFrame{
 
+    final static int WINDOW_SIZE_W=810;
+    final static int WINDOW_SIZE_H=810;
+    final static int NUM_STARS=100;
+    private final static Font bonusFont = new Font("TimesRoman",Font.BOLD,24);
+    private final static Font menuFont = new Font("TimesRoman",Font.BOLD,24);
+    private final static Color shadowColor = new Color(0,0,200);
+
     private Image buffer=null;
     private Graphics screen=null;
     public static List<Ball> balls = new CopyOnWriteArrayList<>();
     public static List<Bat> bats = new CopyOnWriteArrayList<>();
     public static List<Brick> bricks = new CopyOnWriteArrayList<>();
     public static List<Bullet> bullets = new CopyOnWriteArrayList<>();
-    public static List<Bonus> bonuses = new CopyOnWriteArrayList<>();
-    public static List<Star> stars = new CopyOnWriteArrayList<>();
+    public static List<Bonus> bonuses =new CopyOnWriteArrayList<>();
+
+    public static Star[] stars = new Star[NUM_STARS];
 
 
 
     private Game game;
     private Menu menu;
 
-
-    final static int WINDOW_SIZE_W=600;
-    final static int WINDOW_SIZE_H=600;
-    final static int NUM_STARS=100;
 
     @Override
     public void paint(Graphics g) {
@@ -37,16 +41,16 @@ public class Arkanoid extends JFrame{
 
         g.setColor(Color.BLUE);
         g.fillRect(20,40,WINDOW_SIZE_W-40,WINDOW_SIZE_H-40);
-        g.setColor(new Color(0,0,200));
+        g.setColor(shadowColor);
         g.fillRect(20,40,WINDOW_SIZE_W-40,20);
         g.fillRect(20,40,20,WINDOW_SIZE_H-40);
 
         g.setColor(Color.GREEN);
         for (Brick brick:bricks){
-            g.setColor(new Color(0,0,200));
+            g.setColor(shadowColor);
             g.fillRect((int)brick.getPosX()+16,(int)brick.getPosY()+16,brick.getW(),brick.getH());
             if (brick.getType()==0){
-                g.setColor(Color.BLACK);
+                g.setColor(Color.YELLOW);
                 g.fillRect((int)brick.getPosX()-1,(int)brick.getPosY()-1,brick.getW()+2,brick.getH()+2);
             }
             if (brick.isHitAnim()){
@@ -57,7 +61,7 @@ public class Arkanoid extends JFrame{
             g.fillRect((int)brick.getPosX()+1,(int)brick.getPosY()+1,brick.getW()-2,brick.getH()-2);
         }
 
-        if (game.getGameState()==0){
+        if (Game.getGameState()==0){
             g.setColor(Color.WHITE);
             for (Star star:stars){
                 g.fillOval(star.getPosX(),star.getPosY(),star.getW(),star.getH());
@@ -65,7 +69,7 @@ public class Arkanoid extends JFrame{
         }
 
 
-        g.setColor(Color.RED);
+        g.setColor(Color.DARK_GRAY);
         g.fillRect(0,20,WINDOW_SIZE_W,20);
         g.fillRect(0,20,20,WINDOW_SIZE_H);
         g.fillRect(WINDOW_SIZE_W-20,20,20,WINDOW_SIZE_H);
@@ -97,28 +101,19 @@ public class Arkanoid extends JFrame{
             g.setColor(bonus.getBonusType().getColor());
             g.fillRoundRect((int)bonus.getPosX(),(int)bonus.getPosY(),bonus.getSize()*2,bonus.getSize(),bonus.getSize(),bonus.getSize());
             g.setColor(Color.WHITE);
-            g.setFont(new Font("TimesRoman",Font.BOLD,20));
-            g.drawString(bonus.getBonusType().getName(),(int)bonus.getPosX()+bonus.getSize()-6,(int)bonus.getPosY()+bonus.getSize()-3);
+            g.setFont(bonusFont);
+            g.drawString(bonus.getBonusType().getName(),(int)bonus.getPosX()+bonus.getSize()-10,(int)bonus.getPosY()+bonus.getSize()-6);
         }
-
-        g.setColor(Color.LIGHT_GRAY);
-        g.fillRect(WINDOW_SIZE_W-4,0,200,WINDOW_SIZE_H);
-        g.setColor(Color.RED);
-        g.setFont(new Font("TimesRoman",Font.BOLD,30));
-        g.drawString("Menu",WINDOW_SIZE_W+50,100);
-        int i=0;
-        for (String str:menu.getNameMenuItem()){
-            g.drawString(str,WINDOW_SIZE_W+50,200+i++*30);
-        }
-        g.setColor(Color.RED);
-        g.fillOval(WINDOW_SIZE_W+10,170+menu.getCurrentMenuItem()*30,40,40);
-        g.drawString("Life: " + Game.life,WINDOW_SIZE_W+50,300);
 
         for (Bat bat: bats){
+            if (bat.isMagnit()) {
+                g.setColor(Color.YELLOW);
+            } else {
+                g.setColor(Color.GRAY);
+            }
             switch (bat.getType()){
                 case DOWN:
                 case UP:
-                    g.setColor(Color.GRAY);
                     g.fillRect((int)bat.getPosX(),(int)bat.getPosY(),bat.getSize(),bat.getFat());
                     g.setColor(Color.RED);
                     g.fillRect((int)bat.getPosX()+bat.getSize()/2-(int)bat.getShootReloadSize()/2,(int)bat.getPosY()+bat.getFat()/2,(int)bat.getShootReloadSize(),bat.getFat()/3);
@@ -136,7 +131,6 @@ public class Arkanoid extends JFrame{
                     break;
                 case LEFT:
                 case RIGHT:
-                    g.setColor(Color.GRAY);
                     g.fillRect((int)bat.getPosX(),(int)bat.getPosY(),bat.getFat(),bat.getSize());
                     g.setColor(Color.RED);
                     g.fillRect((int)bat.getPosX()+bat.getFat()/2,(int)bat.getPosY()+bat.getSize()/2-(int)bat.getShootReloadSize()/2,bat.getFat()/3,(int)bat.getShootReloadSize());
@@ -154,6 +148,82 @@ public class Arkanoid extends JFrame{
                     break;
             }
         }
+        g.setColor(Color.LIGHT_GRAY);
+        g.fillRect(WINDOW_SIZE_W-4,0,200,WINDOW_SIZE_H);
+        if (!Menu.isHelp()){
+            g.setColor(Color.RED);
+            g.setFont(menuFont);
+            g.fillRect(WINDOW_SIZE_W+5,167+menu.getCurrentMenuItem()*30,30,8);
+            int i=0;
+            for (String str:menu.getNameMenuItem()){
+                if (i==menu.getCurrentMenuItem()) {
+                    g.setColor(Color.GRAY);
+                    g.drawString(str, WINDOW_SIZE_W + 41, 181 + i * 30);
+                }
+                g.setColor(Color.RED);
+                g.drawString(str,WINDOW_SIZE_W+40,180+i++*30);
+            }
+
+
+            if (Game.getGameState()!=0){
+                g.drawString("Level:",WINDOW_SIZE_W+20,300);
+                g.drawString(""+Game.getCurrentLevel(),WINDOW_SIZE_W+20,330);
+                g.drawString("Score:",WINDOW_SIZE_W+20,380);
+                g.drawString("" + Game.getScore(),WINDOW_SIZE_W+20,410);
+                g.drawString("Max: ",WINDOW_SIZE_W+20,460);
+                g.drawString("" + Game.getMaxScore(),WINDOW_SIZE_W+20,490);
+                g.drawString("Life: " + Game.life,WINDOW_SIZE_W+20,540);
+
+
+                int sizeBall=24;
+                int posXBall=WINDOW_SIZE_W+160;
+                int posYBall=520;
+                for (int j = 0; j < Game.life; j++) {
+                    posXBall += 30;
+                    if (j % 6 == 0) {
+                        posXBall -= 180;
+                        posYBall += 30;
+                    }
+                    g.setColor(Color.YELLOW);
+                    g.fillOval(posXBall, posYBall, sizeBall, sizeBall);
+                    g.setColor(Color.DARK_GRAY);
+                    g.fillOval(posXBall + 1, posYBall + 1, sizeBall - 2, sizeBall - 2);
+                    g.setColor(Color.YELLOW);
+                    g.fillOval(posXBall + sizeBall / 5, posYBall + sizeBall / 5, sizeBall / 2, sizeBall / 2);
+                    g.setColor(Color.DARK_GRAY);
+                    g.fillOval(posXBall + sizeBall / 3, posYBall + sizeBall / 3, sizeBall / 2, sizeBall / 2);
+                }
+            }
+        }
+        else{
+            int size=30;
+            int posX=WINDOW_SIZE_W+8;
+            int posY=150;
+            g.setFont(bonusFont);
+            g.setColor(Color.RED);
+            g.drawString("Bonuses:",posX,posY);
+            for (BonusType bonus:BonusType.values()){
+                posY+=36;
+                g.setColor(bonus.getColor());
+                g.fillRoundRect(posX,posY,size*2,size,size,size);
+                g.setColor(Color.BLACK);
+                g.drawString(bonus.getName(),posX+size-8,posY+size-4);
+                g.drawString(bonus.toString(),posX+size+30,posY+size-4);
+                g.setColor(Color.WHITE);
+                g.drawString(bonus.getName(),posX+size-10,posY+size-6);
+            }
+            g.setColor(Color.RED);
+            posY+=90;
+            g.drawString("'w'a's'd' - move",posX,posY);
+            posY+=30;
+            g.drawString("'Space' - push",posX,posY);
+            posY+=30;
+            g.drawString("'Shift' - fire",posX,posY);
+            posY+=30;
+            g.drawString("'Esc' - exit help",posX,posY);
+
+        }
+
 
 
         screen.drawImage(buffer,0,0,null);
@@ -195,12 +265,15 @@ public class Arkanoid extends JFrame{
                             game.newGame();
                             break;
                         case 1:
+                            Menu.setHelp(true);
                             break;
                         case 2:
                             System.exit(0);
                             break;
                     }
-
+                }
+                if (e.getKeyCode()==27) {
+                    Menu.setHelp(false);
                 }
 
             }
@@ -208,9 +281,10 @@ public class Arkanoid extends JFrame{
             @Override
             public void keyReleased(KeyEvent e) {
                 super.keyReleased(e);
-                for (Bat bat: bats){
+                for (Bat bat:bats){
                     bat.stopKeyCode(e.getKeyCode());
                 }
+
             }
         });
     }

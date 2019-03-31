@@ -1,18 +1,18 @@
 package pack.Arkanoid;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import static pack.Arkanoid.Arkanoid.*;
 
 
 public class Bat extends MyObject{
 
+
     private int defaultSize;
     private BatType type;
-
     private int modeSpeed;
 
 
@@ -30,7 +30,7 @@ public class Bat extends MyObject{
 
     private double shootReloadSize;
 
-
+    private Set<Integer> startKeyCode = new CopyOnWriteArraySet<>();
 
 
     public boolean isMagnit() {
@@ -43,7 +43,7 @@ public class Bat extends MyObject{
 
     private int fat;
 
-    private Set<Integer> startKeyCode = new HashSet<>();
+
     private List<Ball> balls = new CopyOnWriteArrayList<>();
 
     public void ballAdd(Ball ball){
@@ -99,7 +99,7 @@ public class Bat extends MyObject{
         switch (keyCode) {
             case 65: {
                 if ((!startKeyCode.contains(keyCode)) && ((type==BatType.DOWN) || (type==BatType.UP))) {
-                    dX = -1;
+                    dX = -1.6;
                     dY = 0;
                     startKeyCode.add(keyCode);
                     startKeyCode.remove(68);
@@ -109,7 +109,7 @@ public class Bat extends MyObject{
             }
             case 68: {
                 if ((!startKeyCode.contains(keyCode)) && ((type==BatType.DOWN) || (type==BatType.UP))) {
-                    dX = 1;
+                    dX = 1.6;
                     dY = 0;
                     startKeyCode.add(keyCode);
                     startKeyCode.remove(65);
@@ -120,7 +120,7 @@ public class Bat extends MyObject{
             case 87: {
                 if ((!startKeyCode.contains(keyCode)) && ((type==BatType.LEFT) || (type==BatType.RIGHT))) {
                     dX = 0;
-                    dY = -1;
+                    dY = -1.6;
                     startKeyCode.add(keyCode);
                     moveTimer(keyCode);
                 }
@@ -129,13 +129,13 @@ public class Bat extends MyObject{
             case 83: {
                 if ((!startKeyCode.contains(keyCode)) && ((type==BatType.LEFT) || (type==BatType.RIGHT))) {
                     dX = 0;
-                    dY = 1;
+                    dY = 1.6;
                     startKeyCode.add(keyCode);
                     moveTimer(keyCode);
                 }
                 break;
             }
-            case 70:{
+            case 32:{
                     for (Ball ball : balls) {
                         ball.setState(1);
                         ball.getDeg(this);
@@ -143,7 +143,7 @@ public class Bat extends MyObject{
                 }
                 break;
             }
-            case 32:
+            case 16:
                 shoot();
                 break;
         }
@@ -181,15 +181,17 @@ public class Bat extends MyObject{
         }
     }
 
-    private void moveTimer(int keyCode){
 
+
+    private void moveTimer(int keyCode){
         new Thread(() -> {
             double x;
             double y;
-            while (startKeyCode.contains(keyCode)){
+            while (startKeyCode.contains(keyCode) && bats.contains(this)){
                 x=posX+dX;
                 y=posY+dY;
                 if ((Game.isBreakLevel()) && (type==BatType.DOWN)){
+
                     if ((x>=-size+20) && (x<=WINDOW_SIZE_W-20)){
                         posX=x;
                     }
@@ -215,11 +217,14 @@ public class Bat extends MyObject{
         }).start();
     }
 
+
     public void setBonus(Bonus bonus){
         double speedKoef=1.0;
         double dKoef=1.0;
-        if (type!=BatType.DOWN)
+        if (type!=BatType.DOWN){
             return;
+        }
+        Game.setScore(Game.getScore()+1000);
         switch (bonus.getBonusType()){
             case EXPAND:
                 size=(int)(defaultSize*1.5);
@@ -309,4 +314,6 @@ public class Bat extends MyObject{
 
         }
     }
+
+
 }

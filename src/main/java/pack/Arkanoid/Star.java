@@ -37,22 +37,34 @@ public class Star{
     }
 
     public static void createStars(){
-        for (int i = 0; i < Arkanoid.NUM_STARS; i++) {
-            Arkanoid.stars.add(new Star(i,random.nextInt(Arkanoid.WINDOW_SIZE_W),random.nextInt(Arkanoid.WINDOW_SIZE_H),random.nextInt(3)+2,random.nextInt(3)+2));
+        if (Arkanoid.stars!=null) {
+            for (int i = 0; i < Arkanoid.NUM_STARS; i++){
+                Arkanoid.stars[i] = new Star(i,random.nextInt(Arkanoid.WINDOW_SIZE_W),random.nextInt(Arkanoid.WINDOW_SIZE_H),random.nextInt(3)+2,random.nextInt(3)+2);
+            }
         }
+        else {
+            for (int i = 0; i < Arkanoid.NUM_STARS; i++) {
+                newStar(i);
+            }
+        }
+    }
+
+    private static void newStar(int i) {
+        Arkanoid.stars[i].posX=random.nextInt(Arkanoid.WINDOW_SIZE_W);
+        Arkanoid.stars[i].posY=0;
+        Arkanoid.stars[i].w=random.nextInt(3)+2;
+        Arkanoid.stars[i].h=random.nextInt(3)+2;
     }
 
     public void moveStar() {
         if (id%2==0){
-            posY+=2;
-        }
-        else {
             posY+=1;
         }
+        else {
+            posY+=2;
+        }
         if (posY>Arkanoid.WINDOW_SIZE_H){
-            int i=id;
-            Arkanoid.stars.remove(this);
-            Arkanoid.stars.add(new Star(id,random.nextInt(Arkanoid.WINDOW_SIZE_W),0,random.nextInt(3)+2,random.nextInt(3)+2));
+            newStar(id);
         }
     }
 }

@@ -51,8 +51,8 @@ public class Ball extends MyObject {
 
     public Ball(){
         state=1;
-        size=20;
-        speed=5;
+        size=24;
+        speed=7;
         defaultSpeed=speed;
         posX=-100;
         posY=-100;

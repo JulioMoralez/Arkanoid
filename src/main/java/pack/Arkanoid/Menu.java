@@ -3,8 +3,17 @@ package pack.Arkanoid;
 public class Menu {
 
     private int currentMenuItem;
-    private String[] nameMenuItem = {"New game", "Records", "Exit"};
+    private String[] nameMenuItem = {"New game", "Help", "Exit"};
     private int maxMenuItem;
+    private static boolean help;
+
+    public static boolean isHelp() {
+        return help;
+    }
+
+    public static void setHelp(boolean help) {
+        Menu.help = help;
+    }
 
     public Menu(){
         currentMenuItem=0;

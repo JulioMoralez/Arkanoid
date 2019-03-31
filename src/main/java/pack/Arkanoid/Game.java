@@ -1,14 +1,38 @@
 package pack.Arkanoid;
 
+import java.io.*;
+
 import static pack.Arkanoid.Arkanoid.*;
 
 public class Game {
 
     private Collision collision;
     private Level level = new Level();
-    private int currentLevel;
-    private int maxLevel;
 
+    public static int getCurrentLevel() {
+        return currentLevel;
+    }
+
+    private static int currentLevel;
+    private int maxLevel;
+    private static int score;
+    private static int maxScore;
+
+    public static int getMaxScore() {
+        return maxScore;
+    }
+
+    public static void setMaxScore(int maxScore) {
+        Game.maxScore = maxScore;
+    }
+
+    public static int getScore() {
+        return score;
+    }
+
+    public static void setScore(int score) {
+        Game.score = score;
+    }
 
     public static int getGameState() {
         return gameState;
@@ -42,9 +66,9 @@ public class Game {
 
 
     public Game(){
-        maxLevel=2;
-        life=3;
+        maxLevel=10;
         start();
+        loadScore();
         playGame();
     }
 
@@ -82,33 +106,94 @@ public class Game {
 
     private void playGame() {
         new Thread(() -> {
-            currentLevel=0;
-            level.create(currentLevel);
-            while (currentLevel<=maxLevel){
-                level.create(currentLevel);
-                newBallOnBat();
-                while (Level.levelHP>0){
-                    if (balls.size()==0){
-                        newBallOnBat();
 
-                    }
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+
+            while (true){
+                label1:
+                switch (gameState){
+                    case 0:
+                        if (stars==null){
+                            Star.createStars();
+                        }
+                        break;
+                    case 1:
+                        currentLevel=2;
+                        score=0;
+                        life=3;
+                        Level.levelHP=0;
+                        while (currentLevel<=maxLevel){
+                            level.create(currentLevel);
+
+                            newBallOnBat();
+                            while (Level.levelHP>0){
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                if (balls.size()==0){
+                                    newBallOnBat();
+                                    life--;
+                                }
+                                if (life==0){
+                                    System.out.println("YOU LOSE");
+                                    endGame();
+                                    break label1;
+                                }
+                                if (gameState==0){
+                                    System.out.println("RESTART GAME");
+                                    endGame();
+                                    break label1;
+                                }
+                            }
+                            currentLevel++;
+                            score+=5000;
+                            saveScore();
+                        }
+                        System.out.println("YOU WIN!");
+                        endGame();
+                        break;
                 }
-                currentLevel++;
+                try {
+                    Thread.sleep(1000);
+                }
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-            System.out.println("YOU WIN!");
         }).start();
 
 
 
     }
 
+    private void saveScore() {
+        if (score>maxScore){
+            maxScore=score;
+            new Thread(()->{
+                try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("score.txt"))){
+                    bufferedWriter.write(""+score);
+                    bufferedWriter.flush();
+                } catch (IOException e) {
+
+                }
+            }).start();
+        }
+
+    }
+
+    private void endGame() {
+        gameState=0;
+        life=0;
+        currentLevel=0;
+        balls.clear();
+        bats.clear();
+        bricks.clear();
+        bullets.clear();
+        bonuses.clear();
+    }
+
     private void newBallOnBat() {
-        if (currentLevel==0) return;
         Game.setBreakLevel(false);
         bats.clear();
         quatro=false;
@@ -119,10 +204,23 @@ public class Game {
     }
 
     public void newGame(){
-        gameState=1;
-        currentLevel=0;
-        life=3;
-        Level.levelHP=0;
+        loadScore();
+        if (gameState==0){
+            gameState=1;
+        }
+        else {
+            gameState=0;
+        }
+
+    }
+
+    private void loadScore() {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("score.txt"))){
+            maxScore= Integer.parseInt(bufferedReader.readLine());
+        } catch (Exception e) {
+            maxScore=0;
+        }
+
     }
 }
 

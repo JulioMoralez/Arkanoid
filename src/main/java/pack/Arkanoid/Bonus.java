@@ -4,6 +4,7 @@ import static pack.Arkanoid.Arkanoid.bonuses;
 
 public class Bonus extends MyObject{
 
+
     private BonusType bonusType;
 
     public BonusType getBonusType() {
@@ -14,18 +15,19 @@ public class Bonus extends MyObject{
         this.bonusType = bonusType;
     }
 
-    private Bonus (double posX, double posY){
+    public Bonus (double posX, double posY){
         this.posX=posX;
         this.posY=posY;
+        size=30;
         dX=0.0;
         dY=2.0;
-        bonusType=BonusType.values()[random.nextInt(BonusType.values().length)];
-//        bonusType=BonusType.BREAK;
+//        bonusType=BonusType.values()[random.nextInt(BonusType.values().length)];
+        bonusType=BonusType.PLAYER;
 
     }
 
-    public static void createBonus(Brick brick){
-        Bonus bonus = new Bonus(brick.getPosX(), brick.getPosY());
+    public static void createBonus(double posX, double posY){
+        Bonus bonus = new Bonus(posX, posY);
         bonuses.add(bonus);
     }
 

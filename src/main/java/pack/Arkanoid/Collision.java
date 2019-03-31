@@ -45,11 +45,12 @@ public class Collision{
                                 }
             }
             for (Brick brick:Arkanoid.bricks){
-               if (    (X>brick.getPosX()) &&
-                       (X<brick.getPosX()+brick.getW()) &&
-                       (Y>brick.getPosY()) &&
-                       (Y<brick.getPosY()+brick.getH())){
+               if (    (X>=brick.getPosX()) &&
+                       (X<=brick.getPosX()+brick.getW()) &&
+                       (Y>=brick.getPosY()) &&
+                       (Y<=brick.getPosY()+brick.getH())){
                    {
+                       System.out.println(brick.getType());
                        brick.hit();
                         double dif1,dif2,dif3,dif4,minx,miny;
                         dif1=Math.abs(X-brick.getPosX());
@@ -77,10 +78,10 @@ public class Collision{
             Y = bullet.getPosY() + bullet.getSize()/2.0;
 
             for (Brick brick:Arkanoid.bricks) {
-                if (    (X > brick.getPosX()) &&
-                        (X < brick.getPosX() + brick.getW()) &&
-                        (Y > brick.getPosY()) &&
-                        (Y < brick.getPosY() + brick.getH())) {
+                if (    (X >= brick.getPosX()) &&
+                        (X <= brick.getPosX() + brick.getW()) &&
+                        (Y >= brick.getPosY()) &&
+                        (Y <= brick.getPosY() + brick.getH())) {
                     {
                         brick.hit();
                         Arkanoid.bullets.remove(bullet);
@@ -94,9 +95,9 @@ public class Collision{
 
             for (Bat bat:Arkanoid.bats) {
                 if (    (bat.getType()==BatType.DOWN) &&
-                        (X > bat.getPosX()) &&
-                        (X < bat.getPosX() + bat.getSize()) &&
-                        (Y > bat.getPosY())) {
+                        (X >= bat.getPosX()) &&
+                        (X <= bat.getPosX() + bat.getSize()) &&
+                        (Y >= bat.getPosY())) {
                     {
                         bat.setBonus(bonus);
                         Arkanoid.bonuses.remove(bonus);

@@ -13,7 +13,7 @@ public enum BonusType {
     CATCH("C",new Color(0,255,0)),
     PLAYER("P",new Color(200,200,200)),
     QUATRO("Q",new Color(200,100,100)),
-    MULTI("P",new Color(255,255,0));
+    MULTI("M",new Color(255,255,0));
 
     private String name;
     private Color color;

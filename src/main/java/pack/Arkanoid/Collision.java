@@ -6,9 +6,13 @@ public class Collision{
     public void result() {
         double X;
         double Y;
+        double oldX;
+        double oldY;
         for (Ball ball:Arkanoid.balls){
             X=ball.getPosX()+ball.getSize()/2.0;
             Y=ball.getPosY()+ball.getSize()/2.0;
+            oldX=ball.getOldPosX()+ball.getSize()/2.0;
+            oldY=ball.getOldPosY()+ball.getSize()/2.0;
             for (Bat bat:Arkanoid.bats){
                 if (    (   (bat.getType()==BatType.DOWN) &&
                             (X>bat.getPosX()) &&
@@ -29,7 +33,7 @@ public class Collision{
                                 {
                                     if (bat.isMagnit()){
                                         ball.setState(0);
-                                        ball.setBat(bat);
+                                        ball.setBat(bat,0);
                                         bat.ballAdd(ball);
                                         if ((bat.getType()==BatType.DOWN) || (bat.getType()==BatType.UP)){
                                             ball.setOnBatX(ball.getPosX()-bat.getPosX());
@@ -50,23 +54,46 @@ public class Collision{
                        (Y>=brick.getPosY()) &&
                        (Y<=brick.getPosY()+brick.getH())){
                    {
-                       System.out.println(brick.getType());
-                       brick.hit();
-                        double dif1,dif2,dif3,dif4,minx,miny;
-                        dif1=Math.abs(X-brick.getPosX());
-                        dif2=Math.abs(X-brick.getPosX()-brick.getW());
-                        dif3=Math.abs(Y-brick.getPosY());
-                        dif4=Math.abs(Y-brick.getPosY()-brick.getH());
-                        minx=Math.min(dif1,dif2);
-                        miny=Math.min(dif3,dif4);
+                        brick.hit();
 
 
-                        if (minx<miny){
-                            ball.inversX();
-                        }
-                        else{
+                        if ((oldX>=brick.getPosX()) &&
+                            (oldX<=brick.getPosX()+brick.getW())){
                             ball.inversY();
-                        }
+                            }
+                        else
+                       if ((oldY>=brick.getPosY()) &&
+                               (oldY<=brick.getPosY()+brick.getH())){
+                           ball.inversX();
+                       }
+                       else
+                       ball.inversY();
+
+
+
+
+//                        double dif1,dif2,dif3,dif4,minx,miny;
+////                        dif1=Math.abs(X-brick.getPosX());
+////                        dif2=Math.abs(X-brick.getPosX()-brick.getW());
+////                        dif3=Math.abs(Y-brick.getPosY());
+////                        dif4=Math.abs(Y-brick.getPosY()-brick.getH());
+////                        minx=Math.min(dif1,dif2);
+////                        miny=Math.min(dif3,dif4);
+////                       System.out.println(dif1 + " " + dif2 + " "+dif3 + " "+dif4);
+////
+////
+////                        if (minx<miny){
+////                            if (ball.getdX()>0)
+////                                ball.inversX();
+////                            else
+////                                ball.inversY();
+////                        }
+////                        else{
+////                            if (ball.getdY()>0)
+////                                ball.inversX();
+////                            else
+////                                ball.inversY();
+////                        }
 
                    }
 

@@ -53,29 +53,27 @@ public class Level {
                     bricks.add(new Brick(5, k+7, 4, 1));
                 }
                 for (int k = 0; k <4; k++) {
-                    bricks.add(new Brick(6, k+8, 6, 1));
+                    bricks.add(new Brick(6, k+8, 7, 1));
                 }
                 for (int k = 0; k <3; k++) {
-                    bricks.add(new Brick(7, k+9, 3, 1));
+                    bricks.add(new Brick(7, k+9, 6, 1));
                 }
                 for (int k = 0; k <2; k++) {
-                    bricks.add(new Brick(8, k+10, 2, 1));
+                    bricks.add(new Brick(8, k+10, 3, 1));
                 }
                 for (int k = 0; k <1; k++) {
-                    bricks.add(new Brick(9, k+11, 5, 1));
+                    bricks.add(new Brick(9, k+11, 2, 1));
                 }
                 for (int k = 0; k <10; k++) {
                     bricks.add(new Brick(k, 12, 8, 0));
                 }
+                bricks.add(new Brick(10, 12, 5, 1));
                 break;
             case 3:
-                for (int j = 0; j < 10; j++) {
-                    for (int k = 0; k <19; k++) {
-                        bricks.add(new Brick(20+k*40,100+j*20,k%2==0?1:2,1));
-                    }
-                }
+                bricks.add(new Brick(9, 11, 5, 1));
                 break;
             case 4:
+                bricks.add(new Brick(9, 11, 5, 1));
                 break;
             case 5:
                 break;

@@ -117,7 +117,7 @@ public class Game {
                         }
                         break;
                     case 1:
-                        currentLevel=2;
+                        currentLevel=1;
                         score=0;
                         life=3;
                         Level.levelHP=0;
@@ -198,9 +198,16 @@ public class Game {
         bats.clear();
         quatro=false;
         bats.add(new Bat(BatType.DOWN));
+
+//        for (int i = 0; i<180 ; i++) {
+//            balls.add(new Ball());
+//            balls.get(i).setBat(bats.get(0),i);
+//            bats.get(0).ballAdd(balls.get(i));
+//        }
         balls.add(new Ball());
-        balls.get(0).setBat(bats.get(0));
-        bats.get(0).ballAdd(balls.get(0));
+            balls.get(0).setBat(bats.get(0),0);
+            bats.get(0).ballAdd(balls.get(0));
+
     }
 
     public void newGame(){

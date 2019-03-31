@@ -21,8 +21,8 @@ public class Bonus extends MyObject{
         size=30;
         dX=0.0;
         dY=2.0;
-//        bonusType=BonusType.values()[random.nextInt(BonusType.values().length)];
-        bonusType=BonusType.PLAYER;
+        bonusType=BonusType.values()[random.nextInt(BonusType.values().length)];
+//        bonusType=BonusType.EXPAND;
 
     }
 

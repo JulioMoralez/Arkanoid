@@ -229,7 +229,7 @@ public class Bat extends MyObject{
             case EXPAND:
                 size=(int)(defaultSize*1.5);
                 shootReloadSize=size;
-                if (posX+size>=WINDOW_SIZE_W){
+                if (posX+size+20>=WINDOW_SIZE_W){
                     posX=WINDOW_SIZE_W-size-20;
                 }
                 break;

@@ -102,6 +102,9 @@ public class Arkanoid extends JFrame{
             g.fillRoundRect((int)bonus.getPosX(),(int)bonus.getPosY(),bonus.getSize()*2,bonus.getSize(),bonus.getSize(),bonus.getSize());
             g.setColor(Color.WHITE);
             g.setFont(bonusFont);
+            g.setColor(Color.BLACK);
+            g.drawString(bonus.getBonusType().getName(),(int)bonus.getPosX()+bonus.getSize()-8,(int)bonus.getPosY()+bonus.getSize()-4);
+            g.setColor(Color.WHITE);
             g.drawString(bonus.getBonusType().getName(),(int)bonus.getPosX()+bonus.getSize()-10,(int)bonus.getPosY()+bonus.getSize()-6);
         }
 

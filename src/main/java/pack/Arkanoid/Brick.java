@@ -5,7 +5,6 @@ import java.awt.*;
 
 public class Brick extends MyObject{
 
-  //  private int id;
     private int w;
     private int h;
     private int type;
@@ -99,9 +98,9 @@ public class Brick extends MyObject{
             hp--;
         }
         if (hp==0){
-//            if (random.nextInt(100)<20){
+            if (random.nextInt(100)<20){
                Bonus.createBonus(posX, posY);
-//            }
+            }
             Game.setScore(Game.getScore()+100);
             Level.levelHP--;
             Arkanoid.bricks.remove(this);

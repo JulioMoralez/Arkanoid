@@ -24,6 +24,25 @@ public class Ball extends MyObject {
     private Bat bat;
     private int state;
 
+    private double oldPosX;
+    private double oldPosY;
+
+    public double getOldPosX() {
+        return oldPosX;
+    }
+
+    public void setOldPosX(double oldPosX) {
+        this.oldPosX = oldPosX;
+    }
+
+    public double getOldPosY() {
+        return oldPosY;
+    }
+
+    public void setOldPosY(double oldPosY) {
+        this.oldPosY = oldPosY;
+    }
+
     public double getDefaultSpeedDX() {
         return defaultSpeedDX;
     }
@@ -80,7 +99,7 @@ public class Ball extends MyObject {
     }
 
 
-    public void setBat(Bat bat) {
+    public void setBat(Bat bat, int shift) {
         state=0;
         this.bat = bat;
         switch (bat.getType()){
@@ -135,6 +154,8 @@ public class Ball extends MyObject {
     }
 
     void moveBall(){
+        oldPosX=posX;
+        oldPosY=posY;
         if (state==0){
             posX=bat.getPosX()+onBatX;
             posY=bat.getPosY()+onBatY;

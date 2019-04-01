@@ -149,6 +149,15 @@ public class Level {
 
                 break;
             case 5:
+                for (int i = 0; i <10 ; i++) {
+                    bricks.add(new Brick(2, 2+i, 6, 1));
+                }
+                for (int i = 0; i <10 ; i++) {
+                    bricks.add(new Brick(3, 2+i, 6, 1));
+                }
+                for (int i = 0; i <10 ; i++) {
+                    bricks.add(new Brick(4, 2+i, 6, 1));
+                }
                 break;
         }
         for (Brick brick:bricks){

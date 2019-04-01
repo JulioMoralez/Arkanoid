@@ -22,7 +22,7 @@ public class Bonus extends MyObject{
         dX=0.0;
         dY=2.0;
         bonusType=BonusType.values()[random.nextInt(BonusType.values().length)];
-//        bonusType=BonusType.EXPAND;
+//        bonusType=BonusType.QUATRO;
 
     }
 

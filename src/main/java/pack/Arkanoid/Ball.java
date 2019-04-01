@@ -105,6 +105,7 @@ public class Ball extends MyObject {
         switch (bat.getType()){
             case DOWN:
                 onBatX=bat.getSize()*0.3;
+//                onBatX=shift;
                 onBatY=-size;
                 break;
             case RIGHT:
@@ -132,19 +133,19 @@ public class Ball extends MyObject {
             switch (bat.getType()){
                 case DOWN:
                     pos=posX-bat.getPosX()+size/2.0;
-                    t = ((90*(batHalfSize-pos)/batHalfSize)-90)*Math.PI/-180;
+                    t = ((80*(batHalfSize-pos)/batHalfSize)-90)*Math.PI/-180;
                     break;
                 case RIGHT:
                     pos=posY-bat.getPosY()+size/2.0;
-                    t = ((-90*(batHalfSize-pos)/batHalfSize))*Math.PI/-180;
+                    t = ((-80*(batHalfSize-pos)/batHalfSize))*Math.PI/-180;
                     break;
                 case UP:
                     pos=posX-bat.getPosX()+size/2.0;
-                    t = ((90*(batHalfSize-pos)/batHalfSize)-90)*Math.PI/180;
+                    t = ((80*(batHalfSize-pos)/batHalfSize)-90)*Math.PI/180;
                     break;
                 case LEFT:
                     pos=posY-bat.getPosY()+size/2.0;
-                    t = ((-90*(batHalfSize-pos)/batHalfSize)-180)*Math.PI/180;
+                    t = ((-80*(batHalfSize-pos)/batHalfSize)-180)*Math.PI/180;
                     break;
     }
             dX=-speed*Math.cos(t);

@@ -227,6 +227,21 @@ public class Arkanoid extends JFrame{
 
         }
 
+        if (Level.isShowLevel()){
+            g.setColor(Color.RED);
+            g.drawString("Level: " + Game.getCurrentLevel(),WINDOW_SIZE_H/2-40,WINDOW_SIZE_H/10*8);
+        }
+
+        switch (Game.getGameResult()){
+            case 1:
+                g.setColor(Color.GREEN);
+                break;
+            case 2:
+                g.setColor(Color.RED);
+                break;
+        }
+        g.drawString(Game.getLabelGameResult()[Game.getGameResult()],WINDOW_SIZE_H/2-45,WINDOW_SIZE_H/2);
+
 
 
         screen.drawImage(buffer,0,0,null);
@@ -237,6 +252,8 @@ public class Arkanoid extends JFrame{
         setLayout(new GridLayout(1,1));
         setSize(new Dimension(WINDOW_SIZE_W+200, WINDOW_SIZE_H));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
+
         game = new Game();
         menu = new Menu();
 
@@ -250,8 +267,8 @@ public class Arkanoid extends JFrame{
                 }
             }
         }).start();
-
         setVisible(true);
+
         buffer = this.createImage(WINDOW_SIZE_W+200,WINDOW_SIZE_H);
 
         addKeyListener(new KeyAdapter() {

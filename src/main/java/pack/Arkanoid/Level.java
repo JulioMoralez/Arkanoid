@@ -4,6 +4,14 @@ import static pack.Arkanoid.Arkanoid.bricks;
 
 public class Level {
 
+
+    public static boolean isShowLevel() {
+        return showLevel;
+    }
+
+    private static boolean showLevel;
+
+
     public static int levelHP;
 
     public void create(int level) {
@@ -12,6 +20,16 @@ public class Level {
         Arkanoid.bats.clear();
         Arkanoid.bullets.clear();
         Arkanoid.bonuses.clear();
+        System.out.println(level);
+            new Thread(()->{
+                showLevel=true;
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                showLevel=false;
+            }).start();
         switch (level){
             case 1:
                 for (int k = 0; k <11; k++) {

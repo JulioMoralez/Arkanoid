@@ -9,6 +9,18 @@ public class Game {
     private Collision collision;
     private Level level = new Level();
 
+    private static String[] labelGameResult={"","YOU WIN!", "GAME OVER"};
+
+    public static String[] getLabelGameResult() {
+        return labelGameResult;
+    }
+
+    public static int getGameResult() {
+        return gameResult;
+    }
+
+    private static int gameResult;
+
     public static int getCurrentLevel() {
         return currentLevel;
     }
@@ -66,7 +78,7 @@ public class Game {
 
 
     public Game(){
-        maxLevel=10;
+        maxLevel=4;
         start();
         loadScore();
         playGame();
@@ -117,7 +129,7 @@ public class Game {
                         }
                         break;
                     case 1:
-                        currentLevel=1;
+                        currentLevel=3;
                         score=0;
                         life=3;
                         Level.levelHP=0;
@@ -136,12 +148,14 @@ public class Game {
                                     life--;
                                 }
                                 if (life==0){
-                                    System.out.println("YOU LOSE");
+                                    System.out.println("GAME OVER");
+                                    gameResult=2;
                                     endGame();
                                     break label1;
                                 }
                                 if (gameState==0){
                                     System.out.println("RESTART GAME");
+                                    gameResult=0;
                                     endGame();
                                     break label1;
                                 }
@@ -151,6 +165,7 @@ public class Game {
                             saveScore();
                         }
                         System.out.println("YOU WIN!");
+                        gameResult=1;
                         endGame();
                         break;
                 }
@@ -212,6 +227,7 @@ public class Game {
 
     public void newGame(){
         loadScore();
+        gameResult=0;
         if (gameState==0){
             gameState=1;
         }

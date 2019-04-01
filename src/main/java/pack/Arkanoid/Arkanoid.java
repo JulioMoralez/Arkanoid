@@ -110,7 +110,7 @@ public class Arkanoid extends JFrame{
 
         for (Bat bat: bats){
             if (bat.isMagnit()) {
-                g.setColor(Color.YELLOW);
+                g.setColor(Color.GREEN);
             } else {
                 g.setColor(Color.GRAY);
             }

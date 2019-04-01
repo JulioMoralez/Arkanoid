@@ -129,9 +129,9 @@ public class Game {
                         }
                         break;
                     case 1:
-                        currentLevel=3;
+                        currentLevel=1;
                         score=0;
-                        life=3;
+                        life=5;
                         Level.levelHP=0;
                         while (currentLevel<=maxLevel){
                             level.create(currentLevel);
@@ -148,13 +148,11 @@ public class Game {
                                     life--;
                                 }
                                 if (life==0){
-                                    System.out.println("GAME OVER");
                                     gameResult=2;
                                     endGame();
                                     break label1;
                                 }
                                 if (gameState==0){
-                                    System.out.println("RESTART GAME");
                                     gameResult=0;
                                     endGame();
                                     break label1;
@@ -164,7 +162,6 @@ public class Game {
                             score+=5000;
                             saveScore();
                         }
-                        System.out.println("YOU WIN!");
                         gameResult=1;
                         endGame();
                         break;

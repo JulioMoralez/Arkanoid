@@ -20,7 +20,7 @@ public class Bat extends MyObject{
         return shootReady;
     }
 
-    private boolean shootReady=true;
+    private boolean shootReady;
     private boolean magnit;
     private int shootReload;
 

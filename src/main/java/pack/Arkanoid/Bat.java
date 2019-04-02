@@ -187,7 +187,7 @@ public class Bat extends MyObject{
         new Thread(() -> {
             double x;
             double y;
-            while (startKeyCode.contains(keyCode) && bats.contains(this)){
+            while (startKeyCode.contains(keyCode) && bats.contains(this) && (!Game.isPause())){
                 x=posX+dX;
                 y=posY+dY;
                 if ((Game.isBreakLevel()) && (type==BatType.DOWN)){

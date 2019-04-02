@@ -123,26 +123,26 @@ public class Level {
                 break;
             case 4:
                 for (int i = 0; i <7 ; i++) {
-                    bricks.add(new Brick(1, 5+i, 7, 1));
+                    bricks.add(new Brick(1, 5+i, 2, 1));
                 }
-                bricks.add(new Brick(3, 5, 7, 1));
+                bricks.add(new Brick(3, 5, 5, 1));
                 bricks.add(new Brick(4, 5, 6, 0));
                 bricks.add(new Brick(5, 5, 6, 0));
                 bricks.add(new Brick(6, 5, 6, 0));
-                bricks.add(new Brick(7, 5, 7, 1));
-                bricks.add(new Brick(3, 6, 7, 1));
+                bricks.add(new Brick(7, 5, 5, 1));
+                bricks.add(new Brick(3, 6, 5, 1));
                 bricks.add(new Brick(5, 6, 4, 1));
-                bricks.add(new Brick(7, 6, 7, 1));
-                bricks.add(new Brick(3, 7, 7, 1));
-                bricks.add(new Brick(4, 7, 7, 1));
-                bricks.add(new Brick(5, 7, 7, 1));
-                bricks.add(new Brick(6, 7, 7, 1));
-                bricks.add(new Brick(7, 7, 7, 1));
+                bricks.add(new Brick(7, 6, 5, 1));
+                bricks.add(new Brick(3, 7, 5, 1));
+                bricks.add(new Brick(4, 7, 5, 1));
+                bricks.add(new Brick(5, 7, 5, 1));
+                bricks.add(new Brick(6, 7, 5, 1));
+                bricks.add(new Brick(7, 7, 5, 1));
                 for (int i = 0; i <7 ; i++) {
                     bricks.add(new Brick(2+i, 11, 6, 0));
                 }
                 for (int i = 0; i <7 ; i++) {
-                    bricks.add(new Brick(9, 5+i, 7, 1));
+                    bricks.add(new Brick(9, 5+i, 2, 1));
                 }
 
 

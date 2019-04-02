@@ -223,6 +223,8 @@ public class Arkanoid extends JFrame{
             posY+=30;
             g.drawString("'Shift' - fire",posX,posY);
             posY+=30;
+            g.drawString("'p' - pause",posX,posY);
+            posY+=30;
             g.drawString("'Esc' - exit help",posX,posY);
 
         }
@@ -241,6 +243,10 @@ public class Arkanoid extends JFrame{
                 break;
         }
         g.drawString(Game.getLabelGameResult()[Game.getGameResult()],WINDOW_SIZE_H/2-45,WINDOW_SIZE_H/2);
+        if (Game.isPause()){
+            g.setColor(Color.RED);
+            g.drawString("PAUSE",WINDOW_SIZE_H+50,60);
+        }
 
 
 
@@ -275,9 +281,12 @@ public class Arkanoid extends JFrame{
             @Override
             public void keyPressed(KeyEvent e) {
                 super.keyPressed(e);
-                for (Bat bat: bats){
-                    bat.moveBat(e.getKeyCode());
+                if (!Game.isPause()){
+                    for (Bat bat: bats){
+                        bat.moveBat(e.getKeyCode());
+                    }
                 }
+
                 menu.keyMenu(e.getKeyCode());
                 if (e.getKeyCode()==10){
                     switch (menu.getCurrentMenuItem()){
@@ -295,7 +304,9 @@ public class Arkanoid extends JFrame{
                 if (e.getKeyCode()==27) {
                     Menu.setHelp(false);
                 }
-
+                if (e.getKeyCode()==80) {
+                    Game.setPause(!Game.isPause());
+                }
             }
 
             @Override

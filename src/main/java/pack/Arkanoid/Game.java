@@ -1,6 +1,7 @@
 package pack.Arkanoid;
 
 import java.io.*;
+import java.util.Properties;
 
 import static pack.Arkanoid.Arkanoid.*;
 
@@ -26,9 +27,20 @@ public class Game {
     }
 
     private static int currentLevel;
-    private int maxLevel;
+    private static int maxLevel=4;
     private static int score;
     private static int maxScore;
+    private static int startLevel;
+
+    public static boolean isPause() {
+        return pause;
+    }
+
+    public static void setPause(boolean pause) {
+        Game.pause = pause;
+    }
+
+    private static boolean pause;
 
     public static int getMaxScore() {
         return maxScore;
@@ -78,10 +90,26 @@ public class Game {
 
 
     public Game(){
-        maxLevel=4;
+        getParam();
         start();
         loadScore();
         playGame();
+    }
+
+    private void getParam() {
+        Properties property = new Properties();
+
+        try(FileInputStream fileInputStream =new FileInputStream("config.properties")) {
+            property.load(fileInputStream);
+            startLevel = Integer.parseInt(property.getProperty("startLevel"));
+            if ((startLevel<1) || (startLevel>maxLevel)){
+                startLevel=1;
+            }
+
+        } catch (Exception e) {
+            System.out.println("Default config");
+            startLevel=1;
+        }
     }
 
     private void start() {
@@ -111,6 +139,13 @@ public class Game {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                while (pause){
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
 
         }).start();
@@ -129,7 +164,7 @@ public class Game {
                         }
                         break;
                     case 1:
-                        currentLevel=1;
+                        currentLevel=startLevel;
                         score=0;
                         life=5;
                         Level.levelHP=0;
